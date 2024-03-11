@@ -5,5 +5,5 @@
  * @author idan
  *
  */
-module FinalCourseDesignPattern {
+module CourseFinalDesignPattern {
 }
