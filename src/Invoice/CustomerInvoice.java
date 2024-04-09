@@ -7,9 +7,9 @@ public class CustomerInvoice implements IInvoice {
 	final double VAT = 0.17;
 	private Customer customer;
 	private String productName;
-	private int sellingPrice;	
+	private double sellingPrice;	
 	
-	public CustomerInvoice(Customer customer,String productName, int sellingPrice) {
+	public CustomerInvoice(Customer customer,String productName, double sellingPrice) {
 		this.customer = customer;
 		this.productName = productName;
 		this.sellingPrice = sellingPrice;
@@ -21,7 +21,7 @@ public class CustomerInvoice implements IInvoice {
 		System.out.println("Customer details:");
 		System.out.println(customer.toString());
 		System.out.println("The product name is: " + productName);
-		System.out.printf("The price is: %d \nVAT is: %.2f\n",sellingPrice ,sellingPrice*VAT);
+		System.out.printf("The price is: %.2f \nVAT is: %.2f\n",sellingPrice ,sellingPrice*VAT);
 	}
 	
 }

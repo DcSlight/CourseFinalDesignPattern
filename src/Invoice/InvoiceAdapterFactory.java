@@ -5,7 +5,7 @@ import Interfaces.IInvoice;
 import eNums.eInvoice;
 
 public class InvoiceAdapterFactory {
-	public static IInvoice createAdapterInvoice(eInvoice type,Customer customer,String productName, int sellingPrice,int costPrice) {
+	public static IInvoice createAdapterInvoice(eInvoice type,Customer customer,String productName, double sellingPrice,double costPrice) {
 		switch(type) {
 		case eAccountantInvoice:
 			return new AccountantInvoiceAdapter(new AccountantInvoice(customer,productName,sellingPrice,costPrice));

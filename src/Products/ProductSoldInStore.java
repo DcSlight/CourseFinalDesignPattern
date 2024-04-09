@@ -1,6 +1,10 @@
 package Products;
 
+import Components.Customer;
 import Components.Order;
+import Interfaces.IInvoice;
+import Invoice.InvoiceAdapterFactory;
+import eNums.eInvoice;
 
 public class ProductSoldInStore extends Product{
 	
@@ -13,9 +17,14 @@ public class ProductSoldInStore extends Product{
 
 
 	@Override
-	public void addOrder(Order order) {
-		//TODO: fill
+	public void addOrder(Customer customer, int amount) {
+		decreaseStock(amount);
+		Order order = new Order(this, customer);
+		orders.add(order);		
 	}
+
+
+
 
 	
 	

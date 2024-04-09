@@ -7,10 +7,10 @@ public class AccountantInvoice implements IInvoice{
 	
 	private Customer customer;
 	private String productName;
-	private int sellingPrice;
-	private int costPrice;
+	private double sellingPrice;
+	private double costPrice;
 	
-	public AccountantInvoice(Customer customer,String productName,int sellingPrice,int costPrice) {
+	public AccountantInvoice(Customer customer,String productName,double sellingPrice,double costPrice) {
 		this.customer = customer;
 		this.productName = productName;
 		this.sellingPrice = sellingPrice;
@@ -23,7 +23,7 @@ public class AccountantInvoice implements IInvoice{
 		System.out.println("Customer details:");
 		System.out.println(customer.toString());
 		System.out.println("The product name is: " + productName);
-		System.out.println("The selling price is: " + sellingPrice + " The profit is: " + (sellingPrice - costPrice));
+		System.out.printf("The price is: %.2f \nThe profit is: %.2f\n",sellingPrice ,(sellingPrice - costPrice));
 	}
 
 }

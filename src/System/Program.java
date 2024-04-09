@@ -15,6 +15,8 @@ public class Program {
 		IInvoice i2=InvoiceAdapterFactory.createAdapterInvoice(accountant, customer, "Yoel geva", 60, 50);
 		i1.showInvoice();
 		i2.showInvoice();
+		
+		
 	}
 
 }

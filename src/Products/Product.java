@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import Components.Customer;
 import Components.Order;
 
 public abstract class  Product {
@@ -24,7 +25,7 @@ public abstract class  Product {
 		this.orders = new LinkedHashSet<Order>();
 	}
 	
-	public abstract void addOrder(Order order);
+	public abstract void addOrder(Customer customer,int amount);
 
 	public String getSerial() {
 		return serial;
@@ -73,6 +74,10 @@ public abstract class  Product {
 
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+	
+	public void decreaseStock(int amount) {
+		this.stock -= amount;
 	}
 
 

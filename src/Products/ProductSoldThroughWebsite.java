@@ -1,5 +1,6 @@
 package Products;
 
+import Components.Customer;
 import Components.Order;
 
 public class ProductSoldThroughWebsite extends Product{
@@ -7,11 +8,6 @@ public class ProductSoldThroughWebsite extends Product{
 	public ProductSoldThroughWebsite(String serial, String productName, double costPrice, double sellingPrice,
 			int stock) {
 		super(serial, productName, costPrice, sellingPrice, stock);
-	}
-
-	@Override
-	public void addOrder(Order order) {
-		// TODO: fill		
 	}
 
 	@Override
@@ -34,5 +30,11 @@ public class ProductSoldThroughWebsite extends Product{
 	public String toString()  {
 		return super.toString();
 	}//TODO: need to update
+
+	@Override
+	public void addOrder(Customer customer, int amount) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

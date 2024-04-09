@@ -1,30 +1,41 @@
 package Components;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import Interfaces.IInvoice;
+import Invoice.InvoiceAdapterFactory;
 import Products.Product;
+import Products.ProductSoldInStore;
+import Products.ProductSoldToWholesalers;
+import eNums.eInvoice;
 
 public class Order {
 
-	private String serial;
 	private Product product;
 	private Customer customer;
-	private IInvoice invoice;
+	private Set<IInvoice> allInvoice;
 	
-	public Order(String serial, Product product, Customer customer, IInvoice invoice) {
-		this.serial = serial;
+	public Order(Product product, Customer customer) {
 		this.product = product;
 		this.customer = customer;
-		this.invoice = invoice;
-	}
-
-	public String getSerial() {
-		return serial;
-	}
-
-	public void setSerial(String serial) {
-		this.serial = serial;
+		this.allInvoice = new HashSet<IInvoice>();
+		IInvoice invoiceAccountant = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eAccountantInvoice,
+				customer, product.getProductName(),
+				product.getSellingPrice(), product.getCostPrice());
+		
+		IInvoice invoiceCustomer = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eCustomerInvoice,
+				customer, product.getProductName(),
+				product.getSellingPrice(), product.getCostPrice());
+		
+		if(product instanceof ProductSoldInStore) {
+			allInvoice.add(invoiceCustomer);
+			allInvoice.add(invoiceAccountant);
+		}
+		else if(product instanceof ProductSoldToWholesalers) {
+			allInvoice.add(invoiceAccountant);
+		}
 	}
 
 	public Product getProduct() {
@@ -43,18 +54,14 @@ public class Order {
 		this.customer = customer;
 	}
 
-	public IInvoice getInvoice() {
-		return invoice;
-	}
-
-	public void setInvoice(IInvoice invoice) {
-		this.invoice = invoice;
+	public Set<IInvoice> getInvoice() {
+		return allInvoice;
 	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(customer, product, serial);
+		return Objects.hash(customer, product);
 	}
 
 	@Override
@@ -67,16 +74,18 @@ public class Order {
 			return false;
 		Order other = (Order) obj;
 		return customer.equals(other.customer)
-			   && product.equals(other.product)
-			   && serial.equals(other.serial);
+			   && product.equals(other.product);
 	}
 	
 	
 
 	@Override
 	public String toString() {
-		return "Order [serial=" + serial + ", product=" + product + ", customer=" + customer + ", invoice=" + invoice
-				+ "]";
+		StringBuffer st = new StringBuffer();
+		for(IInvoice invoice : allInvoice) {
+		//	st+=invoice.showInvoice(); TODO: change invoice interface to return str
+		}
+		return "";
 	}
 	
 	
