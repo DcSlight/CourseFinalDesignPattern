@@ -1,4 +1,4 @@
-package Class;
+package System;
 
 public class Program {
 
