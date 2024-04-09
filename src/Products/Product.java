@@ -23,7 +23,8 @@ public abstract class  Product {
 		this.stock = stock;
 		this.orders = new LinkedHashSet<Order>();
 	}
-
+	
+	public abstract void addOrder(Order order);
 
 	public String getSerial() {
 		return serial;
