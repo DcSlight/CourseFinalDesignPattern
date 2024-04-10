@@ -1,5 +1,5 @@
 package Interfaces;
 
 public interface IInvoice {
-	void showInvoice();
+	String showInvoice();
 }

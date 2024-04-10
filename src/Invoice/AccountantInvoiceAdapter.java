@@ -10,7 +10,7 @@ public class AccountantInvoiceAdapter implements IInvoice{
 	}
 
 	@Override
-	public void showInvoice() {
-		adaptee.showInvoice();
+	public String showInvoice() {
+		return adaptee.showInvoice();
 	}
 }

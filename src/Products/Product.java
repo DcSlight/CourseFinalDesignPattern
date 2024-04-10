@@ -6,6 +6,7 @@ import java.util.Set;
 
 import Components.Customer;
 import Components.Order;
+import Exception.StockException;
 
 public abstract class  Product {
 	protected String serial;
@@ -22,10 +23,21 @@ public abstract class  Product {
 		this.costPrice = costPrice;
 		this.sellingPrice = sellingPrice;
 		this.stock = stock;
-		this.orders = new LinkedHashSet<Order>();
+		this.orders = new LinkedHashSet<>();
 	}
 	
-	public abstract void addOrder(Customer customer,int amount);
+	public abstract void addOrder(Customer customer,int amount) throws StockException ;
+	
+	public String getAllOrders() {
+		double totalProfit=0;
+		StringBuffer st = new StringBuffer();
+		for(Order o : orders) {
+			totalProfit+=o.getProfit();
+			st.append(o.toString());
+		}
+		st.append("\nTotal profit is: " + totalProfit);
+		return st.toString();		
+	}
 
 	public String getSerial() {
 		return serial;
@@ -76,7 +88,9 @@ public abstract class  Product {
 		this.stock = stock;
 	}
 	
-	public void decreaseStock(int amount) {
+	public void decreaseStock(int amount) throws StockException {
+		if(amount > stock)
+			throw new StockException();
 		this.stock -= amount;
 	}
 
@@ -115,12 +129,5 @@ public abstract class  Product {
 		return "Product [serial=" + serial + ", productName=" + productName + ", costPrice=" + costPrice
 				+ ", sellingPrice=" + sellingPrice + ", stock=" + stock + ", orders=" + orders + "]";
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

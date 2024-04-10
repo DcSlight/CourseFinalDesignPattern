@@ -2,6 +2,7 @@ package Products;
 
 import Components.Customer;
 import Components.Order;
+import Exception.StockException;
 
 public class ProductSoldToWholesalers extends Product{
 
@@ -10,9 +11,9 @@ public class ProductSoldToWholesalers extends Product{
 	}
 
 	@Override
-	public void addOrder(Customer customer,int amount) {
+	public void addOrder(Customer customer,int amount) throws StockException {
 		decreaseStock(amount);
-		Order order = new Order(this, customer);
+		Order order = new Order(this, customer,amount);
 		orders.add(order);
 	}
 

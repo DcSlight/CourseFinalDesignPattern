@@ -12,22 +12,27 @@ import Products.ProductSoldToWholesalers;
 import eNums.eInvoice;
 
 public class Order {
-
+	private int id;
+	private static int counter = 0;
+	private int amount;
+	private double profit;
 	private Product product;
 	private Customer customer;
 	private Set<IInvoice> allInvoice;
 	
-	public Order(Product product, Customer customer) {
+	public Order(Product product, Customer customer,int amount) {
 		this.product = product;
 		this.customer = customer;
+		this.amount = amount;
+		this.profit  = (product.getSellingPrice() - product.getCostPrice()) * amount;
 		this.allInvoice = new HashSet<IInvoice>();
 		IInvoice invoiceAccountant = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eAccountantInvoice,
 				customer, product.getProductName(),
-				product.getSellingPrice(), product.getCostPrice());
+				product.getSellingPrice(), product.getCostPrice(),amount);
 		
 		IInvoice invoiceCustomer = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eCustomerInvoice,
 				customer, product.getProductName(),
-				product.getSellingPrice(), product.getCostPrice());
+				product.getSellingPrice(), product.getCostPrice(),amount);
 		
 		if(product instanceof ProductSoldInStore) {
 			allInvoice.add(invoiceCustomer);
@@ -36,6 +41,9 @@ public class Order {
 		else if(product instanceof ProductSoldToWholesalers) {
 			allInvoice.add(invoiceAccountant);
 		}
+		counter++;
+		this.id=counter;
+		
 	}
 
 	public Product getProduct() {
@@ -61,7 +69,7 @@ public class Order {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(customer, product);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -77,15 +85,17 @@ public class Order {
 			   && product.equals(other.product);
 	}
 	
-	
+	public double getProfit() {
+		return profit;
+	}
 
 	@Override
 	public String toString() {
 		StringBuffer st = new StringBuffer();
 		for(IInvoice invoice : allInvoice) {
-		//	st+=invoice.showInvoice(); TODO: change invoice interface to return str
+			st.append(invoice.showInvoice());
 		}
-		return "";
+		return st.toString();
 	}
 	
 	
