@@ -14,18 +14,28 @@ public abstract class  Product {
 	protected double costPrice;
 	protected double sellingPrice;
 	protected int stock;
+	protected double weight;
 	protected Set<Order> orders;
 
 	
-	public Product(String serial,String productName,double costPrice,double sellingPrice,int stock) {
+	public Product(String serial,String productName,double costPrice,double sellingPrice,int stock,double weight) {
 		this.serial=serial;
 		this.productName = productName;
 		this.costPrice = costPrice;
 		this.sellingPrice = sellingPrice;
 		this.stock = stock;
 		this.orders = new LinkedHashSet<>();
+		this.weight = weight;
 	}
 	
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+
 	public abstract void addOrder(Customer customer,int amount) throws StockException ;
 	
 	public String getAllOrders() {
@@ -120,14 +130,17 @@ public abstract class  Product {
 				&& productName.equals(other.productName)
 				&& (sellingPrice ==other.sellingPrice)
 				&& serial.equals(other.serial)
-				&& stock == other.stock;
+				&& stock == other.stock
+				&& weight == other.weight;
 	}
-
 
 	@Override
 	public String toString() {
 		return "Product [serial=" + serial + ", productName=" + productName + ", costPrice=" + costPrice
-				+ ", sellingPrice=" + sellingPrice + ", stock=" + stock + ", orders=" + orders + "]";
+				+ ", sellingPrice=" + sellingPrice + ", stock=" + stock + ", weight=" + weight + ", orders=" + orders
+				+ "]";
 	}
+
+	
 	
 }

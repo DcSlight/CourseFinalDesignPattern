@@ -6,15 +6,13 @@ import java.util.Objects;
 import Components.Contact;
 
 public abstract class ShippingCompany{
-	private int id;
+	protected int id;
 	private static int counter=0;
-	private Contact contact;
-	private double shipFee;
-	private int importTax;
+	protected Contact contact;
+	protected int importTax;
 	
-	public ShippingCompany(Contact contact,double shipFee,int importTax) {
+	public ShippingCompany(Contact contact,int importTax) {
 		this.contact=contact;
-		this.shipFee=shipFee;
 		this.importTax=importTax;
 		counter++;
 		this.id=counter;
@@ -26,14 +24,6 @@ public abstract class ShippingCompany{
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
-	}
-
-	public double getShipFee() {
-		return shipFee;
-	}
-
-	public void setShipFee(double shipFee) {
-		this.shipFee = shipFee;
 	}
 
 	public int getImportTax() {
@@ -58,12 +48,12 @@ public abstract class ShippingCompany{
 		if (getClass() != obj.getClass())
 			return false;
 		ShippingCompany other = (ShippingCompany) obj;
-		return contact.equals(other.contact) && importTax == other.importTax && shipFee == shipFee;
+		return contact.equals(other.contact) && importTax == other.importTax;
 	}
 
 	@Override
 	public String toString() {
-		return "ShippingCompany [id=" + id + ", contact=" + contact + ", shipFee=" + shipFee + ", importTax="
+		return "ShippingCompany [id=" + id + ", contact=" + contact + ", importTax="
 				+ importTax + "]";
 	}
 	
