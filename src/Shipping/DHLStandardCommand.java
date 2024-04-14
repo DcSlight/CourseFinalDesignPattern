@@ -13,6 +13,10 @@ public class DHLStandardCommand extends DHL implements IShippingCommand{
 		this.price = price;
 		
 	}
+	
+	public void setProductPrice(double price) {
+		this.price = price;
+	}
 
 	@Override
 	public double execute() {

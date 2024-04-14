@@ -11,6 +11,10 @@ public class FedExExpressCommand extends FedEx implements IShippingCommand{
 		super(contact, importTax);
 		this.weight = weight;
 	}
+	
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
 
 	@Override
 	public double execute() {

@@ -14,11 +14,21 @@ public class DHLController implements IShippingStandardCommand,IShippingExpressC
 		this.DHLExpress = new DHLExpressCommand(contact, importTax);
 	}
 	
+	public void setProduct(Product p) {
+		DHLStandard.setProductPrice(p.getSellingPrice());
+	}
+	
 	public double calcExpress() {
 		return DHLExpress.execute();
 	}
 	
 	public double calcStandard() {
 		return DHLStandard.execute();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "The Comapny is: DHL ";
 	}
 }

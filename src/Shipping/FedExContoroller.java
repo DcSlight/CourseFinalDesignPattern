@@ -16,6 +16,11 @@ public class FedExContoroller implements IShippingStandardCommand,IShippingExpre
 		this.fedExExpress = new FedExExpressCommand(contact, importTax,product.getWeight());
 	}
 	
+	public void setProduct(Product p) {
+		this.fedExExpress.setWeight(p.getWeight());
+		this.fedExStandard.setWeight(p.getWeight());
+	}
+	
 	public double calcExpress() {
 		return fedExExpress.execute();
 	}
@@ -23,4 +28,5 @@ public class FedExContoroller implements IShippingStandardCommand,IShippingExpre
 	public double calcStandard() {
 		return fedExStandard.execute();
 	}
+
 }

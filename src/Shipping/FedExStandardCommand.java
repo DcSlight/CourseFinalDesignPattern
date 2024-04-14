@@ -13,6 +13,10 @@ public class FedExStandardCommand extends FedEx implements IShippingCommand{
 		super(contact, importTax);
 		this.weight = weight;
 	}
+	
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
 
 	public double execute() {
 		return (weight / PRODUCT_WEIGHT)*FEE_STANDARD;
