@@ -11,6 +11,7 @@ import Interfaces.IShippingStandardCommand;
 import Products.Product;
 import Products.ProductSoldInStore;
 import Products.ProductSoldThroughWebsite;
+import Shipping.DHLController;
 import Shipping.FedExContoroller;
 
 public class Program {
@@ -21,8 +22,10 @@ public class Program {
 		Product p = new ProductSoldThroughWebsite("AA12", "Tami 4", 50, 70, 25, 4.2);
 		Contact c = new Contact("idan","0506507070");
 		express.add(new FedExContoroller(p, c, 200));
+		express.add(new DHLController(p, c, 20));
 		for(IShippingExpressCommand i : express) {
 			System.out.println(i.calcExpress());
+			System.out.println(i.getClass());
 		}
 	}
 

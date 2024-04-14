@@ -4,15 +4,23 @@ import Components.Contact;
 import Interfaces.IShippingCommand;
 
 public class DHLStandardCommand extends DHL implements IShippingCommand{
+	
+	private final double PRECENT_FEE_PRODUCT = 0.1;
+	protected double price;
 
-	public DHLStandardCommand(Contact contact, double shipFee, int importTax) {
-		super(contact, shipFee, importTax);
+	public DHLStandardCommand(Contact contact, int importTax,double price) {
+		super(contact, importTax);
+		this.price = price;
+		
 	}
 
 	@Override
 	public double execute() {
-		// TODO Auto-generated method stub
-		return 0;
+		double shippingFee=PRECENT_FEE_PRODUCT * this.price;
+		if(shippingFee > MAX_SHIP_PRICE)
+			shippingFee = MAX_SHIP_PRICE;
+		return shippingFee;
+		
 	}
 	
 }
