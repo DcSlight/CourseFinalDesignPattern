@@ -1,25 +1,29 @@
 package Shipping;
 
-import Components.Contact;
-import Interfaces.IShippingCommand;
+import Interfaces.ICommand;
+import Interfaces.IShippingReceiver;
+import Products.Product;
 
-public class FedExStandardCommand extends FedEx implements IShippingCommand{
-	
-	private final int FEE_STANDARD = 10;
+public class FedExStandardCommand implements ICommand {
+	private FedEx fedEx;
 	private double weight;
-	
-	
-	public FedExStandardCommand(Contact contact, int importTax,double weight) {
-		super(contact, importTax);
-		this.weight = weight;
-	}
-	
-	public void setWeight(double weight) {
-		this.weight = weight;
+
+    public FedExStandardCommand(FedEx fedEx) {
+        this.fedEx = fedEx;
+        this.weight = 0;
+    }
+    
+    @Override
+	public void setNewProduct(Product product) {
+    	this.weight = product.getWeight();
+		
 	}
 
-	public double execute() {
-		return (weight / PRODUCT_WEIGHT)*FEE_STANDARD;
-	}
-
+    @Override
+    public IShippingReceiver execute() {
+        double price = fedEx.calculateStandardShippingFee(weight);
+        IShippingReceiver receiver = new FedExReceiver(price);
+        return receiver;
+    }
+	
 }

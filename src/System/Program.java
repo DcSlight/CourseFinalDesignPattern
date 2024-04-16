@@ -1,47 +1,36 @@
 package System;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import Components.Contact;
-import Components.Customer;
-import Exception.StockException;
-import Interfaces.IShippingExpressCommand;
-import Interfaces.IShippingStandardCommand;
 import Products.Product;
-import Products.ProductSoldInStore;
 import Products.ProductSoldThroughWebsite;
-import Shipping.DHL;
-import Shipping.DHLController;
-import Shipping.FedEx;
-import Shipping.FedExContoroller;
-import Shipping.ShippingCompany;
+import Shipping.*;
+import eNums.eShipType;
 
 public class Program {
 
 	public static void main(String[] args) {
-		Set<IShippingExpressCommand> express = new HashSet<>();
-		Set<IShippingStandardCommand> standard = new HashSet<>();
-		Product p = new ProductSoldThroughWebsite("AA12", "Tami 4", 50, 70, 25, 4.2);
+		ShippingInvoker shippingInvoker = new ShippingInvoker();
 		Contact c = new Contact("idan","0506507070");
-		express.add(new FedExContoroller(p, c, 200));
-		express.add(new DHLController(p, c, 20));
-		double min = Double.MAX_VALUE;
-		double tmp;
-		String company="";
-		for(IShippingExpressCommand i : express) {
-			tmp = i.calcExpress();
-			if(min > tmp){
-				min = tmp;
-				company = i.toString();
-			}
-		}
-		System.out.println(company + "\nThe shipping fee is " + min + "\nThe product cost is: "+p.getSellingPrice() +"\nThe ship type");
-		
-		/*
-		 * Set<ShippingCompany> companies = new HashSet<>(); companies.add(new
-		 * DHL(c,200)); companies.add(new FedEx(c,50));
-		 */
+        DHL dhl = new DHL(c, 20);
+        FedEx fedEx = new FedEx(c, 20);
+        Product product1 = new ProductSoldThroughWebsite("AA12", "Tami 4", 50, 70, 25, 4.2);
+        Product product2 = new ProductSoldThroughWebsite("BA13", "Tami 5", 100, 200, 25, 25);
+        Product product3 = new ProductSoldThroughWebsite("CA14", "Tami 6", 50, 70, 25, 17.6);
+        
+        shippingInvoker.addExpressCommand(new FedExExpressCommand(fedEx));
+        shippingInvoker.addExpressCommand(new DHLExpressCommand(dhl));
+        
+        shippingInvoker.addStandardCommand(new FedExStandardCommand(fedEx));
+        shippingInvoker.addStandardCommand(new DHLStandardCommand(dhl));
+        
+        System.out.println(shippingInvoker.calculateShippingFee(eShipType.eExpress, product1));
+        System.out.println(shippingInvoker.calculateShippingFee(eShipType.eStandard, product1));
+        
+        System.out.println(shippingInvoker.calculateShippingFee(eShipType.eExpress, product2));
+        System.out.println(shippingInvoker.calculateShippingFee(eShipType.eStandard, product2));
+        
+        System.out.println(shippingInvoker.calculateShippingFee(eShipType.eExpress, product3));
+        System.out.println(shippingInvoker.calculateShippingFee(eShipType.eStandard, product3));
 	}
 
 }

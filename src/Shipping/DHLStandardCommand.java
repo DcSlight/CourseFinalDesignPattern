@@ -1,30 +1,28 @@
 package Shipping;
 
-import Components.Contact;
-import Interfaces.IShippingCommand;
+import Interfaces.ICommand;
+import Interfaces.IShippingReceiver;
+import Products.Product;
 
-public class DHLStandardCommand extends DHL implements IShippingCommand{
-	
-	private final double PRECENT_FEE_PRODUCT = 0.1;
-	protected double price;
+public class DHLStandardCommand implements ICommand {
+	private DHL dhl;
+	private double sellingPrice;
 
-	public DHLStandardCommand(Contact contact, int importTax,double price) {
-		super(contact, importTax);
-		this.price = price;
-		
-	}
-	
-	public void setProductPrice(double price) {
-		this.price = price;
+    public DHLStandardCommand(DHL dhl) {
+        this.dhl = dhl;
+        this.sellingPrice = 0;
+    }
+    
+    @Override
+	public void setNewProduct(Product product) {
+    	this.sellingPrice = product.getSellingPrice();
 	}
 
-	@Override
-	public double execute() {
-		double shippingFee=PRECENT_FEE_PRODUCT * this.price;
-		if(shippingFee > MAX_SHIP_PRICE)
-			shippingFee = MAX_SHIP_PRICE;
-		return shippingFee;
-		
-	}
-	
+    @Override
+    public IShippingReceiver execute() {
+        double price = dhl.calculateStandardShippingFee(sellingPrice);
+        IShippingReceiver receiver = new DHLReceiver(price);
+        return receiver;
+    }
+
 }
