@@ -35,7 +35,7 @@ public class ShippingInvoker {
     			setCommandsProduct(standardCommands, product);
     			return calculateCheapestShipping(standardCommands);
 			default:
-				return "Wrong";
+				return "Wrong";//TODO: exception
     	}
     }
     
@@ -51,7 +51,7 @@ public class ShippingInvoker {
         String cheapestCompany = "";
 
         for (ICommand command : commands) {
-            IShippingReceiver receiver = command.execute(); // Assume execute() returns the price
+            IShippingReceiver receiver = command.execute(); // Assume execute() returns the IShippingReceiver
             double price = receiver.getPrice();
             if (price < cheapestPrice) {
                 cheapestPrice = price;
@@ -60,6 +60,6 @@ public class ShippingInvoker {
             System.out.println(price); //TODO: delete
         }
 
-        return cheapestCompany + " offers the cheapest shipping at $" + cheapestPrice;
+        return cheapestCompany + " offers the cheapest shipping at $" + (float)cheapestPrice;
     }
 }
