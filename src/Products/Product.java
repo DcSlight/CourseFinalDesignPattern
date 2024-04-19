@@ -8,7 +8,7 @@ import Components.Customer;
 import Components.Order;
 import Exception.StockException;
 
-public abstract class  Product {
+public abstract class Product {
 	protected String serial;
 	protected String productName;
 	protected double costPrice;
@@ -18,7 +18,8 @@ public abstract class  Product {
 	protected Set<Order> orders;
 
 	
-	public Product(String serial,String productName,double costPrice,double sellingPrice,int stock,double weight) {
+	public Product(String serial, String productName, double costPrice, double sellingPrice, 
+			int stock, double weight) {
 		this.serial=serial;
 		this.productName = productName;
 		this.costPrice = costPrice;

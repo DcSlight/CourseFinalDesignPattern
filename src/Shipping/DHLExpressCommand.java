@@ -1,16 +1,28 @@
 package Shipping;
 
-import Components.Contact;
-import Interfaces.IShippingCommand;
+import Products.Product;
+import Interfaces.ICommand;
+import Interfaces.IShippingReceiver;
 
-public class DHLExpressCommand extends DHL implements IShippingCommand{
 
-	public DHLExpressCommand(Contact contact, int importTax) {
-		super(contact, importTax);
+public class DHLExpressCommand implements ICommand {
+	private DHL dhl;
+
+    public DHLExpressCommand(DHL dhl) {
+        this.dhl = dhl;
+    }
+    
+    @Override
+	public void setNewProduct(Product product) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
-	public double execute() {
-		return MAX_SHIP_PRICE + importTax;
-	}
+    @Override
+    public IShippingReceiver execute() {
+    	double price =  dhl.calculateExpressShippingFee();
+    	IShippingReceiver receiver = new DHLReceiver(price);
+        return receiver;
+    }
+
 }
