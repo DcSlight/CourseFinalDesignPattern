@@ -18,6 +18,8 @@ public abstract class ShippingCompany{
 		this.id=counter;
 	}
 	
+	public abstract String getName();
+	
 	public Contact getContact() {
 		return contact;
 	}

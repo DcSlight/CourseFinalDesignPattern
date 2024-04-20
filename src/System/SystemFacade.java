@@ -1,6 +1,7 @@
 package System;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 import Components.Contact;
@@ -55,7 +56,7 @@ public class SystemFacade {
 	
 	private void initProducts() {
 		Product p1 = new ProductSoldThroughWebsite("AAB12", "Iphone 15 protector", 7.5,87.58 , 400, 0.25);
-		Product p2 = new ProductSoldThroughWebsite("199BA", "TV55", 1200,2750 , 10, 13.6);
+		Product p2 = new ProductSoldThroughWebsite("199BA", "TV", 1200,2750 , 10, 13.6);
 		Product p3 = new ProductSoldThroughWebsite("78FHC", "JBL", 210.5,453.2 , 62, 1.23);
 	
 		Product p4 = new ProductSoldInStore("AHDHB2", "Battery", 12.5, 25, 20, 0.2);
@@ -82,10 +83,20 @@ public class SystemFacade {
 			eShipType type=getShipTypeMenu();
 			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
 			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
+			System.out.println(receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
 		}else {
 			order = new Order(product,customer,amount);
 		}
 		product.addOrder(order);
+	}
+	
+	public Product getProductBySerial(String serial) {
+		for(Product product : products) {
+			if(product.getSerial().equals(serial)) {
+				return product;
+			}
+		}
+		return null;
 	}
 	
 	private eShipType getShipTypeMenu() {
@@ -101,12 +112,14 @@ public class SystemFacade {
 			switch(tmp) {
 			case 1:
 				type=eShipType.eExpress;
+				flag = false;
 				break;
 			case 2:
 				type=eShipType.eStandard;
+				flag = false;
 				break;
 			default:
-				flag = false;
+				flag = true;
 				break;
 			}
 		}while(flag);

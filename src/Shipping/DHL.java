@@ -22,4 +22,9 @@ public class DHL extends ShippingCompany {
 		return shippingFee;
     }
 
+	@Override
+	public String getName() {
+		return "DHL";
+	}
+
 }

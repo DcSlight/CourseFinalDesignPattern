@@ -14,22 +14,13 @@ import eNums.eShipType;
 public class Program {
 
 	public static void main(String[] args) throws Exception  {
-		SystemFacade system = SystemFacade.getInstance();
-		Set<Product> p = system.getProducts();
-		Product p2=null;
-		for(Product p1 : p) {
-			p2=p1;
-			break;
-		}
-		Customer c1 = new Customer("idan","0506004040");
-		System.out.println(p2);
-		try {
-			system.makeOrder(p2, c1, 160);
-		}
-		catch(Exception e) {
-			throw e;//TODO:
-		}
-		System.out.println(p2);
+		SystemFacade systemFacade = SystemFacade.getInstance();
+		Customer c = new Customer("idan", "05");
+		Set<Product> products = systemFacade.getProducts();
+		Product p1 = systemFacade.getProductBySerial("78FHC");
+		System.out.println(p1);
+		systemFacade.makeOrder(p1, c, 5);
+		System.out.println(p1);
 	}
 
 }

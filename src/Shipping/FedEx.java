@@ -18,4 +18,9 @@ public class FedEx extends ShippingCompany{
 	public double calculateStandardShippingFee(double weight) {
     	return (weight / PRODUCT_WEIGHT)*FEE_STANDARD;
     }
+
+	@Override
+	public String getName() {
+		return "FedEx";
+	}
 }
