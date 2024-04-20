@@ -10,56 +10,64 @@ import Interfaces.IShippingReceiver;
 
 public class ShippingInvoker {
 	private Set<ICommand> expressCommands;
-    private Set<ICommand> standardCommands;
+	private Set<ICommand> standardCommands;
 
-    public ShippingInvoker() {
-        this.expressCommands = new HashSet<>();
-        this.standardCommands = new HashSet<>();
-    }
+	public ShippingInvoker() {
+		this.expressCommands = new HashSet<>();
+		this.standardCommands = new HashSet<>();
+	}
 
-    public void addExpressCommand(ICommand command) {
-        this.expressCommands.add(command);
-    }
+	public void addCommand(eShipType type, ICommand command) {
+		switch (type) {
+		case eExpress:
+			addExpressCommand(command);
+		case eStandard:
+			addStandardCommand(command);
+		default:
+			//TODO: think about it
+			break;
+		}
+	}
 
-    public void addStandardCommand(ICommand command) {
-        this.standardCommands.add(command);
-    }
-    
-    public String calculateShippingFee(eShipType type, Product product)
-    {
-    	switch(type) {
-    		case eExpress:
-    			setCommandsProduct(expressCommands, product);
-    			return calculateCheapestShipping(expressCommands);
-    		case eStandard:
-    			setCommandsProduct(standardCommands, product);
-    			return calculateCheapestShipping(standardCommands);
-			default:
-				return "Wrong";//TODO: exception
-    	}
-    }
-    
-    private void setCommandsProduct(Set<ICommand> commands, Product product)
-    {
-    	for (ICommand command : commands) {
-    		command.setNewProduct(product);
-    	}
-    }
+	private void addExpressCommand(ICommand command) {
+		this.expressCommands.add(command);
+	}
 
-    private String calculateCheapestShipping(Set<ICommand> commands) {
-        double cheapestPrice = Double.MAX_VALUE;
-        String cheapestCompany = "";
+	private void addStandardCommand(ICommand command) {
+		this.standardCommands.add(command);
+	}
 
-        for (ICommand command : commands) {
-            IShippingReceiver receiver = command.execute(); // Assume execute() returns the IShippingReceiver
-            double price = receiver.getPrice();
-            if (price < cheapestPrice) {
-                cheapestPrice = price;
-                cheapestCompany = receiver.getName();
-            }
-            System.out.println(price); //TODO: delete
-        }
+	public IShippingReceiver calculateShippingFee(eShipType type, Product product) {
+		switch (type) {
+		case eExpress:
+			setCommandsProduct(expressCommands, product);
+			return calculateCheapestShipping(expressCommands);
+		case eStandard:
+			setCommandsProduct(standardCommands, product);
+			return calculateCheapestShipping(standardCommands);
+		default:
+			return null;// TODO: exception
+		}
+	}
 
-        return cheapestCompany + " offers the cheapest shipping at $" + (float)cheapestPrice;
-    }
+	private void setCommandsProduct(Set<ICommand> commands, Product product) {
+		for (ICommand command : commands) {
+			command.setNewProduct(product);
+		}
+	}
+
+	private IShippingReceiver calculateCheapestShipping(Set<ICommand> commands) {
+		double cheapestPrice = Double.MAX_VALUE;
+		IShippingReceiver cheappestReciever = null;
+		for (ICommand command : commands) {
+			IShippingReceiver receiver = command.execute(); // Assume execute() returns the IShippingReceiver
+			double price = receiver.getPrice();
+			if (price < cheapestPrice) {
+				cheapestPrice = price;
+				cheappestReciever = receiver;
+			}
+		}
+
+		return cheappestReciever;
+	}
 }

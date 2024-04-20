@@ -1,7 +1,12 @@
 package Products;
 
+import java.util.Scanner;
+
 import Components.Customer;
 import Components.Order;
+import Components.WebsiteOrder;
+import Exception.StockException;
+import eNums.eShipType;
 
 public class ProductSoldThroughWebsite extends Product{
 
@@ -31,10 +36,10 @@ public class ProductSoldThroughWebsite extends Product{
 		return super.toString();
 	}//TODO: need to update
 
-	@Override
-	public void addOrder(Customer customer, int amount) {
-		// TODO Auto-generated method stub
-		
+
+	public void addOrder(Order order) throws StockException {
+		decreaseStock(order.getAmount());
+		orders.add(order);
 	}
 
 }

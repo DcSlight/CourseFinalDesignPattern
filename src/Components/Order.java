@@ -26,13 +26,17 @@ public class Order {
 		this.amount = amount;
 		this.profit  = (product.getSellingPrice() - product.getCostPrice()) * amount;
 		this.allInvoice = new HashSet<IInvoice>();
+		initInvoice();
+		counter++;
+		this.id=counter;
+	}
+	
+	private void initInvoice() {
 		IInvoice invoiceAccountant = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eAccountantInvoice,
-				customer, product.getProductName(),
-				product.getSellingPrice(), product.getCostPrice(),amount);
+				customer, product.getProductName(),product.getSellingPrice(), product.getCostPrice(),amount);
 		
 		IInvoice invoiceCustomer = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eCustomerInvoice,
-				customer, product.getProductName(),
-				product.getSellingPrice(), product.getCostPrice(),amount);
+				customer, product.getProductName(),product.getSellingPrice(), product.getCostPrice(),amount);
 		
 		if(product instanceof ProductSoldInStore) {
 			allInvoice.add(invoiceCustomer);
@@ -40,10 +44,11 @@ public class Order {
 		}
 		else if(product instanceof ProductSoldToWholesalers) {
 			allInvoice.add(invoiceAccountant);
-		}
-		counter++;
-		this.id=counter;
-		
+		}		
+	}
+	
+	public int getAmount() {
+		return amount;
 	}
 
 	public Product getProduct() {

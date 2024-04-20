@@ -1,6 +1,8 @@
 package Interfaces;
 
+import Shipping.ShippingCompany;
+
 public interface IShippingReceiver {
-	String getName();
+	ShippingCompany getCompany();
 	double getPrice();
 }

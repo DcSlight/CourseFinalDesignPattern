@@ -3,9 +3,7 @@ package Products;
 import Components.Customer;
 import Components.Order;
 import Exception.StockException;
-import Interfaces.IInvoice;
-import Invoice.InvoiceAdapterFactory;
-import eNums.eInvoice;
+import eNums.eShipType;
 
 public class ProductSoldInStore extends Product{
 	
@@ -18,9 +16,9 @@ public class ProductSoldInStore extends Product{
 
 
 	@Override
-	public void addOrder(Customer customer, int amount) throws StockException {
-		//decreaseStock(amount);
-		Order order = new Order(this, customer,amount);
+	public void addOrder(Order order) throws StockException {
+		decreaseStock(order.getAmount());
+		//TODO: check if need to throw error for type 
 		orders.add(order);		
 	}
 

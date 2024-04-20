@@ -22,7 +22,7 @@ public class FedExExpressCommand implements ICommand {
     @Override
     public IShippingReceiver execute() {
     	double price = fedEx.calculateExpressShippingFee(weight);
-    	IShippingReceiver receiver = new FedExReceiver(price);
+    	IShippingReceiver receiver = new FedExReceiver(price,fedEx);
     	return receiver;
     }
 

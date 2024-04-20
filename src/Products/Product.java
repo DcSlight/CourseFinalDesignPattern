@@ -7,6 +7,7 @@ import java.util.Set;
 import Components.Customer;
 import Components.Order;
 import Exception.StockException;
+import eNums.eShipType;
 
 public abstract class Product {
 	protected String serial;
@@ -37,7 +38,7 @@ public abstract class Product {
 		this.weight = weight;
 	}
 
-	public abstract void addOrder(Customer customer,int amount) throws StockException ;
+	public abstract void addOrder(Order order) throws StockException ;
 	
 	public String getAllOrders() {
 		double totalProfit=0;
