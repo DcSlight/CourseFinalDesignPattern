@@ -94,8 +94,9 @@ public class SystemFacade {
 			eShipType type=getShipTypeMenu();
 			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
 			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
-			System.out.println(receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
-			obs.click();
+			obs.sendProductSold(product);
+			//TODO: fix the string msg of syso
+			System.out.println("\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
 		}else {
 			order = new Order(product,customer,amount);
 		}

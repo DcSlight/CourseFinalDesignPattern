@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import Interfaces.IObserver;
+import Products.Product;
 
 public class ObserverManagment {
 	private Set<IObserver> observes;
@@ -27,7 +28,9 @@ public class ObserverManagment {
 		observes.add(o);
 	}
 	
-	public void click() {
+	public void sendProductSold(Product p) {
+		if(p!=null)
+			setMsg("The product " + p.getProductName() +" - has been orderd");
 		myNotify();
 	}
 
