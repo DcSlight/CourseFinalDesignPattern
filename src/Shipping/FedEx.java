@@ -1,6 +1,8 @@
 package Shipping;
 
 import Components.Contact;
+import Interfaces.IObserver;
+import Observer.ObserverManagment;
 
 public class FedEx extends ShippingCompany{
 	protected final int PRODUCT_WEIGHT = 10;
@@ -22,5 +24,10 @@ public class FedEx extends ShippingCompany{
 	@Override
 	public String getName() {
 		return "FedEx";
+	}
+
+	@Override
+	public void update(ObserverManagment obs) {
+		System.out.println("FedEx get message: " + obs.getMsg());
 	}
 }

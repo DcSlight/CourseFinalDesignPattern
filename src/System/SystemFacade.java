@@ -11,6 +11,7 @@ import Components.WebsiteOrder;
 import Exception.StockException;
 import Interfaces.ICommand;
 import Interfaces.IShippingReceiver;
+import Observer.ObserverManagment;
 import Products.Product;
 import Products.ProductSoldInStore;
 import Products.ProductSoldThroughWebsite;
@@ -28,6 +29,7 @@ public class SystemFacade {
 	private Set<Product> products;
 	private ShippingInvoker shippingInvoker;
 	private Set<ShippingCompany> companies;
+	private ObserverManagment obs;
 	
 	private SystemFacade() {
 		this.products = new HashSet<>();
@@ -35,6 +37,14 @@ public class SystemFacade {
 		this.companies = new HashSet<>();
 		initCompanies();
 		initProducts();//according to the assignment - hard coded 9 products
+		obs = new ObserverManagment();
+		initObservers();
+	}
+	
+	private void initObservers() {
+		for(ShippingCompany company : companies) {
+			obs.attach(company);
+		}
 	}
 	
 	private void initCompanies() {
@@ -48,6 +58,7 @@ public class SystemFacade {
 		
 		Contact contactFedEx = new Contact("Roy-FedEx","0522206896");
 		ShippingCompany fedEx = new FedEx(contactFedEx,70);
+		addCompany(fedEx);
 		ICommand fedExExpress = ShippingFactory.createShippingCommand(eShipType.eExpress, fedEx);
 		addShippment(eShipType.eExpress,fedExExpress);
 		ICommand fedExStandard = ShippingFactory.createShippingCommand(eShipType.eStandard, fedEx);
@@ -84,6 +95,7 @@ public class SystemFacade {
 			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
 			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
 			System.out.println(receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
+			obs.click();
 		}else {
 			order = new Order(product,customer,amount);
 		}

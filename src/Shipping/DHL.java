@@ -1,8 +1,10 @@
 package Shipping;
 
 import Components.Contact;
+import Interfaces.IObserver;
+import Observer.ObserverManagment;
 
-public class DHL extends ShippingCompany {
+public class DHL extends ShippingCompany{
 	protected final int MAX_SHIP_PRICE  = 100;
 	private final double PRECENT_FEE_PRODUCT = 0.1;
 	
@@ -25,6 +27,11 @@ public class DHL extends ShippingCompany {
 	@Override
 	public String getName() {
 		return "DHL";
+	}
+
+	@Override
+	public void update(ObserverManagment obs) {
+		System.out.println("DHL get message: " + obs.getMsg());
 	}
 
 }

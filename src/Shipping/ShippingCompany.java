@@ -4,8 +4,9 @@ package Shipping;
 import java.util.Objects;
 
 import Components.Contact;
+import Interfaces.IObserver;
 
-public abstract class ShippingCompany{
+public abstract class ShippingCompany implements IObserver{
 	protected int id;
 	private static int counter=0;
 	protected Contact contact;
