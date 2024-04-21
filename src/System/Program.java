@@ -2,16 +2,11 @@ package System;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.Set;
-
-import Components.Contact;
 import Components.Customer;
 import Exception.StockException;
-import Order.Order;
 import Products.Product;
 import Products.ProductFactory;
 import Products.ProductSoldThroughWebsite;
-import Shipping.*;
 import eNums.eProduct;
 import eNums.eShipType;
 
@@ -19,6 +14,9 @@ public class Program {
 	
 	
 	public static final String ADD_PRODUCT="1";
+	public static final String ADD_ORDER="4";
+	public static final String PRINT_PRODUCT_DETAILS="6";
+	public static final String PRINT_ALL_PRODUCTS="7";
 	public static final String EXIT_1="E";
 	public static final String EXIT_2="e";
 	public static final Boolean POSITIVE=true;
@@ -44,7 +42,16 @@ public class Program {
 			option = sc.nextLine();
 			switch(option) {
 			case ADD_PRODUCT:
-				addProductMenu(sc);
+				addProductMenu(sc,systemFacade);
+				break;
+			case ADD_ORDER:
+				addOrderMenu(sc,systemFacade);
+				break;
+			case PRINT_PRODUCT_DETAILS:
+				printSpecificProduct(sc,systemFacade);
+				break;
+			case PRINT_ALL_PRODUCTS:
+				System.out.println(systemFacade.getAllProducts());
 				break;
 			case EXIT_1:
 			case EXIT_2:
@@ -57,6 +64,50 @@ public class Program {
 			}
 			
 		}while(flag);
+	}
+	
+	public static void addOrderMenu(Scanner sc,SystemFacade systemFacade) {
+		Product product;
+		int amount;
+		Customer customer =getCustomerDetailsMenu(sc);
+		eShipType type;
+		product=getProductBySerial(sc,systemFacade);
+		if(product == null){
+			System.out.println("Product was not found!");
+			return;
+		}
+		if(product instanceof ProductSoldThroughWebsite)
+			type = getShipTypeMenu(sc);
+		else
+			type = eShipType.eNone;
+		amount = (int) getValidNumber(sc,"How many of this product so you want to order?\n", POSITIVE, Integer.class);
+		try {
+			systemFacade.makeOrder(product, customer, amount, type);
+		}catch(StockException e ) {
+			System.out.println(e.getMessage());
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public static void printSpecificProduct(Scanner sc,SystemFacade systemFacade) {
+		Product product;
+		product=getProductBySerial(sc,systemFacade);
+		if(product == null){
+			System.out.println("Product was not found!");
+			return;
+		}
+		System.out.println(product);
+		
+	}
+	
+	public static Product getProductBySerial(Scanner sc,SystemFacade systemFacade) {
+		Product product;
+		String serial;
+		System.out.println("Please Enter serial number");
+		serial = sc.nextLine();
+		product=systemFacade.getProductBySerial(serial);
+		return product;
 	}
 	
 	
@@ -72,14 +123,17 @@ public class Program {
             		tmp = scanner.nextDouble();
             	}                
                 if(needToBePositive) {
-                	if(tmp.doubleValue() > 0)
+                	if(tmp.doubleValue() > 0) {
+                		scanner.nextLine();//clean buffer
                 		return tmp;
+                	}
                 	throw  new InputMismatchException();
                 }
+                scanner.nextLine();//clean buffer
                 return tmp;	
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input! Please enter a valid integer.");
-                scanner.nextLine();
+                scanner.nextLine();//clean buffer
             }
         }
     }
@@ -95,8 +149,9 @@ public class Program {
 		return c;
 	}
 	
-	public static void addProductMenu(Scanner sc) {
-		Product p;
+	public static void addProductMenu(Scanner sc,SystemFacade systemFacade) {
+		Product product = null;
+		boolean flag=true;
 		int option;
 		String serial,productName;
 		double costPrice, sellingPrice,weight;
@@ -106,20 +161,35 @@ public class Program {
 			System.out.println("2- To create a product in store");
 			System.out.println("3- To create a product through website");
 			option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
+			System.out.println("Enter product serial");
+			serial=sc.nextLine();
+			System.out.println("Enter product name");
+			productName=sc.nextLine();
+			costPrice = (double)getValidNumber(sc,"Enter cost price\n",POSITIVE,Double.class);
+			sellingPrice = (double)getValidNumber(sc,"Enter selling price\n",POSITIVE,Double.class);
+			weight = (double)getValidNumber(sc,"Enter weight\n",POSITIVE,Double.class);
+			stock = (int)getValidNumber(sc,"Enter stock\n",POSITIVE,Integer.class);
 			switch(option) {
 			case 1:
-				//p=ProductFactory.createProduct(eProduct.eProductWholesalers, EXIT_1, ADD_PRODUCT, option, option, option, option)
-				System.out.println("enter");
+				product = ProductFactory.createProduct(eProduct.eProductWholesalers, serial, productName, costPrice, sellingPrice, stock, weight);
+				flag=false;
 				break;
 			case 2:
+				product = ProductFactory.createProduct(eProduct.eProductStore, serial, productName, costPrice, sellingPrice, stock, weight);
+				flag=false;
 				break;
 			case 3:
+				product = ProductFactory.createProduct(eProduct.eProductWebsite, serial, productName, costPrice, sellingPrice, stock, weight);
+				flag=false;
 				break;
 			default:
 				System.out.println("Invalid input");
+				flag=true;
 				break;
 			}
-		}while(true);
+		}while(flag);
+		if(product!=null)
+			systemFacade.addProduct(product);
 	}
 	
 	

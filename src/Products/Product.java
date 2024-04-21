@@ -3,11 +3,8 @@ package Products;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import Components.Customer;
 import Exception.StockException;
 import Order.Order;
-import eNums.eShipType;
 
 public abstract class Product {
 	protected String serial;
@@ -55,13 +52,12 @@ public abstract class Product {
 	public abstract void addOrder(Order order) throws StockException ;
 	
 	public String getAllOrders() {
-		double totalProfit=0;
 		StringBuffer st = new StringBuffer();
+		if(orders.isEmpty())
+			return "There are no orders!";
 		for(Order o : orders) {
-			totalProfit+=o.getProfit();
 			st.append(o.toString());
 		}
-		st.append("\nTotal profit is: " + totalProfit);
 		return st.toString();		
 	}
 
@@ -128,6 +124,14 @@ public abstract class Product {
 	public void setOrder(Set<Order> orders) {
 		this.orders=orders;
 	}
+	
+	public double getTotalProfit() {
+		double sum=0;
+		for(Order order : orders) {
+			sum+=order.getProfit();
+		}
+		return sum;
+	}
 
 
 	@Override
@@ -156,11 +160,10 @@ public abstract class Product {
 
 	@Override
 	public String toString() {
-		return "Product [serial=" + serial + ", productName=" + productName + ", costPrice=" + costPrice
-				+ ", sellingPrice=" + sellingPrice + ", stock=" + stock + ", weight=" + weight + ", orders=" + orders
-				+ "]";
+		StringBuffer st = new StringBuffer();
+		st.append("Current Stock: " + stock + "\n");
+		st.append("Orders:\n" + getAllOrders() + "\n\n");
+		return st.toString();
 	}
-
-	
 	
 }

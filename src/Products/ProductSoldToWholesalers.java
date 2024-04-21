@@ -15,5 +15,14 @@ public class ProductSoldToWholesalers extends Product{
 		//TODO: check if need to throw error for type 
 		orders.add(order);
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer st = new StringBuffer();
+		st.append("Product type: " + this.getClass().getSimpleName() + "\n");
+		st.append("Total Profit: " + (float)getTotalProfit() + "$\n");
+		st.append(super.toString());
+		return st.toString();
+	}
 
 }

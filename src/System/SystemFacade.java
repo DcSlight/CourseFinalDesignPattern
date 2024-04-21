@@ -49,6 +49,23 @@ public class SystemFacade {
 			obs.attach(company);
 		}
 	}
+	
+	public double getSystemTotalProfit() {
+		double sum=0;
+		for(Product product : products) {
+			sum+=product.getTotalProfit();
+		}
+		return sum;
+	}
+	
+	public String getAllProducts() {
+		StringBuffer st = new StringBuffer();
+		st.append("Total profit in system: " + getSystemTotalProfit()+"$\n");
+		for(Product product : products) {
+			st.append(product.toString());
+		}
+		return st.toString();
+	}
 
 	
 	public void makeOrder(Product product,Customer customer, int amount,eShipType type) throws StockException {

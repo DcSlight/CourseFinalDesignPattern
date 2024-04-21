@@ -34,10 +34,10 @@ public class Order {
 	
 	private void initInvoice() {
 		IInvoice invoiceAccountant = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eAccountantInvoice,
-				customer, product.getProductName(),product.getSellingPrice(), product.getCostPrice(),amount);
+				customer,product ,amount);
 		
 		IInvoice invoiceCustomer = InvoiceAdapterFactory.createAdapterInvoice(eInvoice.eCustomerInvoice,
-				customer, product.getProductName(),product.getSellingPrice(), product.getCostPrice(),amount);
+				customer, product,amount);
 		
 		if(product instanceof ProductSoldInStore) {
 			allInvoice.add(invoiceCustomer);
