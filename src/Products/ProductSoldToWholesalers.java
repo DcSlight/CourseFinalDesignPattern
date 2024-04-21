@@ -1,7 +1,7 @@
 package Products;
 
-import Components.Order;
 import Exception.StockException;
+import Order.Order;
 
 public class ProductSoldToWholesalers extends Product{
 

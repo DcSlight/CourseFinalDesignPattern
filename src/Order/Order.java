@@ -1,9 +1,10 @@
-package Components;
+package Order;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import Components.Customer;
 import Interfaces.IInvoice;
 import Invoice.InvoiceAdapterFactory;
 import Products.Product;
@@ -12,7 +13,7 @@ import Products.ProductSoldToWholesalers;
 import eNums.eInvoice;
 
 public class Order {
-	private int id;
+	private int id;//TODO: change to String 4.5
 	private static int counter = 0;
 	private int amount;
 	private double profit;

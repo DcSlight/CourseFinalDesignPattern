@@ -3,9 +3,9 @@ package Products;
 import java.util.Scanner;
 
 import Components.Customer;
-import Components.Order;
-import Components.WebsiteOrder;
 import Exception.StockException;
+import Order.Order;
+import Order.WebsiteOrder;
 import eNums.eShipType;
 
 public class ProductSoldThroughWebsite extends Product{

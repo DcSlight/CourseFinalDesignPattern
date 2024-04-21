@@ -1,5 +1,6 @@
-package Components;
+package Order;
 
+import Components.Customer;
 import Products.Product;
 import Shipping.ShippingCompany;
 import eNums.eShipType;
@@ -39,6 +40,13 @@ public class WebsiteOrder extends Order{
 
 	public void setShippingPrice(double shippingPrice) {
 		this.shippingPrice = shippingPrice;
+	}
+	
+	public String toString() {
+		StringBuffer st = new StringBuffer();
+		st.append(super.toString());
+		st.append("Shipping Company: " + company + " type:" + type.name() + " shipping price: " + shippingPrice );
+		return st.toString();
 	}
 	
 	

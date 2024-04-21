@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import Components.Customer;
-import Components.Order;
 import Exception.StockException;
+import Order.Order;
 import eNums.eShipType;
 
 public abstract class Product {
@@ -30,12 +30,26 @@ public abstract class Product {
 		this.weight = weight;
 	}
 	
+	public Product(Product p) {
+		this.serial = p.getSerial();
+		this.productName = p.getProductName();
+		this.costPrice = p.getCostPrice();
+		this.sellingPrice = p.getSellingPrice();
+		this.stock = p.getStock();
+		this.orders = p.getOrders();
+		this.weight = p.getWeight();
+	}//TODO: delete
+	
 	public double getWeight() {
 		return weight;
 	}
 
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+	
+	public void removeOrder(Order order) {
+		this.orders.remove(order);
 	}
 
 	public abstract void addOrder(Order order) throws StockException ;
@@ -109,6 +123,10 @@ public abstract class Product {
 
 	public Set<Order> getOrders() {
 		return orders;
+	}
+	
+	public void setOrder(Set<Order> orders) {
+		this.orders=orders;
 	}
 
 

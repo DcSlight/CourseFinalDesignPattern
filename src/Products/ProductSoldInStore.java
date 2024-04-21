@@ -1,8 +1,8 @@
 package Products;
 
 import Components.Customer;
-import Components.Order;
 import Exception.StockException;
+import Order.Order;
 import eNums.eShipType;
 
 public class ProductSoldInStore extends Product{
@@ -13,7 +13,6 @@ public class ProductSoldInStore extends Product{
 	public ProductSoldInStore(String serial, String productName, double costPrice, double sellingPrice, int stock,double weight) {
 		super(serial, productName, costPrice, sellingPrice, stock,weight);
 	}
-
 
 	@Override
 	public void addOrder(Order order) throws StockException {

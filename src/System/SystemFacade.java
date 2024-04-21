@@ -6,12 +6,13 @@ import java.util.Scanner;
 import java.util.Set;
 import Components.Contact;
 import Components.Customer;
-import Components.Order;
-import Components.WebsiteOrder;
 import Exception.StockException;
 import Interfaces.ICommand;
 import Interfaces.IShippingReceiver;
 import Observer.ObserverManagment;
+import Order.Order;
+import Order.OrderController;
+import Order.WebsiteOrder;
 import Products.Product;
 import Products.ProductSoldInStore;
 import Products.ProductSoldThroughWebsite;
@@ -30,11 +31,13 @@ public class SystemFacade {
 	private ShippingInvoker shippingInvoker;
 	private Set<ShippingCompany> companies;
 	private ObserverManagment obs;
+	private OrderController orderContorller;
 	
 	private SystemFacade() {
 		this.products = new HashSet<>();
 		this.shippingInvoker = new ShippingInvoker();
 		this.companies = new HashSet<>();
+		this.orderContorller = new OrderController();
 		initCompanies();
 		initProducts();//according to the assignment - hard coded 9 products
 		obs = new ObserverManagment();
@@ -46,6 +49,65 @@ public class SystemFacade {
 			obs.attach(company);
 		}
 	}
+
+	
+	public void makeOrder(Product product,Customer customer, int amount,eShipType type) throws StockException {
+		Order order;
+		if(product instanceof ProductSoldThroughWebsite) {
+			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
+			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
+			obs.sendProductSold(product);
+			//TODO: fix the string msg of syso
+			System.out.println("\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
+		}else {
+			order = new Order(product,customer,amount);
+		}
+		orderContorller.updateOrders(order, product);
+	}
+	
+	public void undoOrder() {
+		orderContorller.undoOrder();
+	}
+	
+	public Product getProductBySerial(String serial) {
+		for(Product product : products) {
+			if(product.getSerial().equals(serial)) {
+				return product;
+			}
+		}
+		return null;
+	}
+	
+	
+	
+	public void addShippment(eShipType type,ICommand c) {
+		shippingInvoker.addCommand(type,c);
+	}
+	
+	public void addProduct(Product product) {
+		this.products.add(product);
+	}
+	
+	public Set<Product> getProducts(){
+		return this.products;
+	}
+	
+	public Set<ShippingCompany> getCompanies(){
+		return this.companies;
+	}
+	
+	
+	public void addCompany(ShippingCompany c) {
+		companies.add(c);
+	}
+	
+	public static SystemFacade getInstance() {
+		if (instance == null) {
+            instance = new SystemFacade();
+        }
+        return instance;
+	}
+	
 	
 	private void initCompanies() {
 		Contact contactDHL = new Contact("Yossi-DHL","0522801897");
@@ -86,85 +148,5 @@ public class SystemFacade {
 		addProduct(p7);
 		addProduct(p8);
 		addProduct(p9);		
-	}
-	
-	public void makeOrder(Product product,Customer customer, int amount) throws StockException {
-		Order order;
-		if(product instanceof ProductSoldThroughWebsite) {
-			eShipType type=getShipTypeMenu();
-			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
-			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
-			obs.sendProductSold(product);
-			//TODO: fix the string msg of syso
-			System.out.println("\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
-		}else {
-			order = new Order(product,customer,amount);
-		}
-		product.addOrder(order);
-	}
-	
-	public Product getProductBySerial(String serial) {
-		for(Product product : products) {
-			if(product.getSerial().equals(serial)) {
-				return product;
-			}
-		}
-		return null;
-	}
-	
-	private eShipType getShipTypeMenu() {
-		Scanner sc = new Scanner(System.in);
-		eShipType type=eShipType.eNone;
-		int tmp;
-		boolean flag=true;
-		do {
-			System.out.println("Please pick the shipping type");
-			System.out.println("For Express enter 1");
-			System.out.println("For Standard enter 2");
-			tmp = sc.nextInt();
-			switch(tmp) {
-			case 1:
-				type=eShipType.eExpress;
-				flag = false;
-				break;
-			case 2:
-				type=eShipType.eStandard;
-				flag = false;
-				break;
-			default:
-				flag = true;
-				break;
-			}
-		}while(flag);
-		sc.close();
-		return type;
-	}
-	
-	public void addShippment(eShipType type,ICommand c) {
-		shippingInvoker.addCommand(type,c);
-	}
-	
-	public void addProduct(Product product) {
-		this.products.add(product);
-	}
-	
-	public Set<Product> getProducts(){
-		return this.products;
-	}
-	
-	public Set<ShippingCompany> getCompanies(){
-		return this.companies;
-	}
-	
-	
-	public void addCompany(ShippingCompany c) {
-		companies.add(c);
-	}
-	
-	public static SystemFacade getInstance() {
-		if (instance == null) {
-            instance = new SystemFacade();
-        }
-        return instance;
 	}
 }
