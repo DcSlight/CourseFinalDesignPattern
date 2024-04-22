@@ -51,7 +51,7 @@ public class Contact implements Cloneable{
 
 	@Override
 	public String toString() {
-		return "Contact [name=" + name + ", whatsApp=" + whatsApp + "]";
+		return "Contact Name: " + name + "\twhatsApp: " + whatsApp;
 	}
 
 	

@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import Exception.StockException;
 import Order.Order;
+import System.SystemFacade;
 
 public abstract class Product implements Cloneable{
 	protected String serial;
@@ -59,11 +60,14 @@ public abstract class Product implements Cloneable{
 	public abstract void addOrder(Order order) throws StockException ;
 	
 	public String getAllOrders() {
+		int num = 1;
 		StringBuffer st = new StringBuffer();
 		if(orders.isEmpty())
 			return "There are no orders!";
 		for(Order o : orders) {
-			st.append(o.toString());
+			st.append(SystemFacade.ANSI_YELLOW + "\nOrder " + num +":\n" + SystemFacade.ANSI_RESET);
+			st.append(o.toString()+ "\n");
+			num++;
 		}
 		return st.toString();		
 	}
@@ -164,11 +168,12 @@ public abstract class Product implements Cloneable{
 	@Override
 	public String toString() {
 		StringBuffer st = new StringBuffer();
-		st.append("Product serial: " + serial);
-		st.append("Product Name: " + productName);
-		st.append("Product Weight: " + weight + "kg");
+		st.append("Product serial: " + serial + "\n");
+		st.append("Product Name: " + productName + "\n");
+		st.append("Product Weight: " + weight + "kg\n");
 		st.append("Current Stock: " + stock + "\n");
-		st.append("Orders:\n" + getAllOrders() + "\n\n");
+		st.append(SystemFacade.ANSI_YELLOW_UNDERLINED + "\nAll orders:\n" + SystemFacade.ANSI_RESET);
+		st.append(getAllOrders() + "\n\n");
 		return st.toString();
 	}
 	

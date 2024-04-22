@@ -53,7 +53,7 @@ public class ProductSoldThroughWebsite extends Product implements Cloneable{
 	public String toString() {
 		StringBuffer st = new StringBuffer();
 		st.append("Product type: " + this.getClass().getSimpleName() + "\n");
-		st.append("Dest Country: " + destCountry);
+		st.append("Dest Country: " + destCountry + "\n");
 		st.append("Total Profit: " + (float)getTotalProfit() + "$\n");
 		st.append(super.toString());
 		return st.toString();

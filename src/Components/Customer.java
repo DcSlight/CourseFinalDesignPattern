@@ -52,7 +52,7 @@ public class Customer implements Cloneable{
 
 	@Override
 	public String toString() {
-		return "Customer [customerName=" + customerName + ", mobile=" + mobile + "]";
+		return "Customer Name: " + customerName + "\tmobile: " + mobile;
 	}
 	
 }

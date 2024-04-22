@@ -64,11 +64,7 @@ public abstract class ShippingCompany implements IObserver,Cloneable{
 
 	@Override
 	public String toString() {
-		return "ShippingCompany [id=" + id + ", contact=" + contact + ", importTax="
-				+ importTax + "]";
+		return "Shipping Company: " + getName() + "\n" + contact + "\nImport tax: " + importTax;
 	}
-	
-	
-	
 	
 }

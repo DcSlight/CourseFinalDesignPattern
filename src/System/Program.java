@@ -31,9 +31,9 @@ public class Program {
 		SystemFacade systemFacade = SystemFacade.getInstance();
 		boolean flag = true;
 		String option;
-		System.out.println("--------------------------------------");
+		System.out.println(SystemFacade.ANSI_CYAN_BOLD + "--------------------------------------");
 		System.out.println("\tWelcome to the System!");
-		System.out.println("--------------------------------------");
+		System.out.println("--------------------------------------" + SystemFacade.ANSI_RESET);
 		do {
 			System.out.println("1 - To add a product");
 			System.out.println("2 - To remove a product");
@@ -70,6 +70,7 @@ public class Program {
 				System.out.println(systemFacade.getAllProducts());
 				break;
 			case PRINT_PRODUCT_ORDERS:
+				printProductOrders(sc,systemFacade);
 				break;
 			case BACKUP_SYSTEM:
 				systemFacade.backUpSystem();
@@ -81,11 +82,11 @@ public class Program {
 				break;
 			case EXIT_1:
 			case EXIT_2:
-				System.out.println("Have a good day");
+				System.out.println(SystemFacade.ANSI_CYAN_BRIGHT + "Have a good day" + SystemFacade.ANSI_RESET);
 				flag=false;
 				break;
 			default:
-				System.out.println("Invalid Input");
+				failureMsg("Invalid Input\n");
 				break;
 			}
 			
@@ -94,14 +95,17 @@ public class Program {
 	
 	public static void addOrderMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product;
+		Customer customer;
 		int amount;
-		Customer customer =getCustomerDetailsMenu(sc);
 		eShipType type;
+		
+		printTitle("\t  Make an order", SystemFacade.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
-			System.out.println("Product was not found!");
+			failureMsg("Product was not found!\n");
 			return;
 		}
+		customer = getCustomerDetailsMenu(sc);
 		if(product instanceof ProductSoldThroughWebsite)
 			type = getShipTypeMenu(sc);
 		else
@@ -118,9 +122,10 @@ public class Program {
 	
 	public static void printSpecificProduct(Scanner sc, SystemFacade systemFacade) {
 		Product product;
+		printTitle("\t  Product details:", SystemFacade.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
-			System.out.println("Product was not found!");
+			failureMsg("Product was not found!\n");
 			return;
 		}
 		System.out.println(product);
@@ -132,6 +137,7 @@ public class Program {
 		Product product;
 		product = getProductBySerial(sc, systemFacade);
 		systemFacade.removeProduct(product);
+		successMsg("Product was removes successfully!\n");
 	}
 	
 	public static void editProductStock(Scanner sc, SystemFacade systemFacade)
@@ -141,6 +147,7 @@ public class Program {
 		product = getProductBySerial(sc, systemFacade);
 		stock = (int) getValidNumber(sc, "Enter a stock number for the product\n", POSITIVE, Integer.class);
 		product.setStock(stock);
+		successMsg("Product stock was updated!\n");
 	}
 	
 	public static Product getProductBySerial(Scanner sc,SystemFacade systemFacade) {
@@ -174,7 +181,7 @@ public class Program {
                 scanner.nextLine();//clean buffer
                 return tmp;	
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input! Please enter a valid integer.");
+            	failureMsg("Invalid input! Please enter a valid integer.\n");
                 scanner.nextLine();//clean buffer
             }
         }
@@ -191,21 +198,34 @@ public class Program {
 		return c;
 	}
 	
-	public static void addProductMenu(Scanner sc,SystemFacade systemFacade) {
+	public static void printProductOrders(Scanner sc, SystemFacade systemFacade) {
+		Product product = null;
+		printTitle("\t The Product Orders", SystemFacade.ANSI_CYAN);
+		product = getProductBySerial(sc, systemFacade);
+		System.out.println(systemFacade.getProductOrders(product) + "\n");
+	}
+	
+	public static void addProductMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product = null;
 		boolean flag=true;
 		int option;
 		String serial,productName;
 		double costPrice, sellingPrice,weight;
 		int stock;
+		printTitle("\t  Add a Product", SystemFacade.ANSI_CYAN);
 		do {
 			System.out.println();
 			System.out.println("1- To create an wholesalers product");
 			System.out.println("2- To create a product in store");
-			System.out.println("3- To create a product through website");
+			System.out.println("3- To create a product through website");//TODO: check wrong option
 			option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
 			System.out.println("Enter product serial");
-			serial=sc.nextLine();//TODO: add sorted and check if serial already exist 
+			serial=sc.nextLine();//TODO: add sorted
+			if (systemFacade.isSerialProductExist(serial)) {
+				flag=false;
+				failureMsg("Serial product is already exist!\n");
+				break; //TODO: check if to do a inner while 
+			}
 			System.out.println("Enter product name");
 			productName=sc.nextLine();
 			costPrice = (double)getValidNumber(sc,"Enter cost price\n",POSITIVE,Double.class);
@@ -229,13 +249,15 @@ public class Program {
 				flag=false;
 				break;
 			default:
-				System.out.println("Invalid input");
+				failureMsg("Invalid input\n");
 				flag=true;
 				break;
 			}
 		}while(flag);
-		if(product!=null)
+		if(product!=null) {
 			systemFacade.addProduct(product);
+			successMsg("Product was added successfully!\n");
+		}
 	}
 	
 	
@@ -264,6 +286,19 @@ public class Program {
 			}
 		}while(flag);
 		return type;
+	}
+	
+	public static void printTitle(String msg, String color) {
+		System.out.println(color + "--------------------------------------");
+		System.out.println(msg);
+		System.out.println("--------------------------------------" + SystemFacade.ANSI_RESET);
+	}
+	
+	public static void successMsg(String msg) {
+		System.out.println(SystemFacade.ANSI_GREEN_BRIGHT + msg + SystemFacade.ANSI_RESET);
+	}
+	public static void failureMsg(String msg) {
+		System.out.println(SystemFacade.ANSI_RED_BRIGHT + msg + SystemFacade.ANSI_RESET);
 	}
 
 }

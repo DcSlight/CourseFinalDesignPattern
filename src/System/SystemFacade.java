@@ -34,6 +34,16 @@ public class SystemFacade {
 	private OrderController orderContorller;
 	private Memento memento;
 	
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_CYAN_BOLD = "\033[1;36m";
+	public static final String ANSI_YELLOW_UNDERLINED = "\033[4;33m";
+	public static final String ANSI_YELLOW_BOLD = "\033[1;33m";
+	public static final String ANSI_CYAN_BRIGHT = "\033[0;96m";
+	public static final String ANSI_RED_BRIGHT = "\033[0;91m"; 
+	public static final String ANSI_GREEN_BRIGHT = "\033[0;92m";
+	
 	private SystemFacade() {
 		this.products = new HashSet<>();
 		this.shippingInvoker = new ShippingInvoker();
@@ -61,11 +71,17 @@ public class SystemFacade {
 	}
 	
 	public String getAllProducts() {
+		int num = 1;
 		StringBuffer st = new StringBuffer();
-		st.append("Total profit in system: " + getSystemTotalProfit()+"$\n");
+		st.append(ANSI_CYAN + "\n--------------------------------------\n");
+		st.append("\t  All Products\n");
+		st.append("--------------------------------------\n" + ANSI_RESET);
 		for(Product product : products) {
+			st.append(ANSI_YELLOW_BOLD + "Product " + num + ":\n" + ANSI_RESET);
 			st.append(product.toString());
+			num++;
 		}
+		st.append(ANSI_CYAN_BRIGHT + "\nTotal profit in system: " + getSystemTotalProfit()+"$\n" + ANSI_RESET);
 		return st.toString();
 	}
 
@@ -77,7 +93,7 @@ public class SystemFacade {
 			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
 			obs.sendProductSold(product);
 			//TODO: fix the string msg of syso
-			System.out.println("\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice());
+			System.out.println(ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice() + "\n" + ANSI_RESET);
 		}else {
 			order = new Order(product,customer,amount);
 		}
@@ -87,9 +103,9 @@ public class SystemFacade {
 	public String undoOrder() {
 		if(orderContorller.haveOrders()) {
 			orderContorller.undoOrder();
-			return "Undo has been success!\n";
+			return ANSI_GREEN_BRIGHT + "Undo has been success!\n" + ANSI_RESET;
 		}
-		return "There are no orders to do undo\n";
+		return ANSI_RED_BRIGHT + "There are no orders to do undo\n" + ANSI_RESET;
 	}
 	
 	public Product getProductBySerial(String serial) {
@@ -101,6 +117,17 @@ public class SystemFacade {
 		return null;
 	}
 	
+	public boolean isSerialProductExist(String Serial) {
+		for (Product product : products) {
+			if (product.getSerial().equals(Serial))
+				return true;
+		}
+		return false;
+	}
+	
+	public String getProductOrders(Product product) {
+		return product.getAllOrders();
+	}
 	
 	
 	public void addShippment(eShipType type,ICommand c) {

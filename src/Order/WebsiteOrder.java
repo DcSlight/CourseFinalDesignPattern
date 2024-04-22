@@ -51,7 +51,7 @@ public class WebsiteOrder extends Order implements Cloneable{
 	public String toString() {
 		StringBuffer st = new StringBuffer();
 		st.append(super.toString());
-		st.append("Shipping Company: " + company + " type:" + type.name() + " shipping price: " + shippingPrice );
+		st.append(company + "\ntype: " + type.name() + "\nshipping price: " + shippingPrice );
 		return st.toString();
 	}
 	

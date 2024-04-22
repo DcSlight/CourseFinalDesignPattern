@@ -107,16 +107,12 @@ public class Order implements Cloneable{
 	@Override
 	public String toString() {
 		StringBuffer st = new StringBuffer();
+		st.append(customer + "\n");
+		st.append("Quantity: " + amount + "\n");
 		for(IInvoice invoice : allInvoice) {
 			st.append(invoice.showInvoice());
 		}
 		return st.toString();
 	}
-	
-	
-	
-	
-	
-	
 	
 }
