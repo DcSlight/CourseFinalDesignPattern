@@ -12,7 +12,7 @@ import Products.ProductSoldInStore;
 import Products.ProductSoldToWholesalers;
 import eNums.eInvoice;
 
-public class Order {
+public class Order implements Cloneable{
 	private int id;//TODO: change to String 4.5
 	private static int counter = 0;
 	private int amount;
@@ -30,6 +30,15 @@ public class Order {
 		initInvoice();
 		counter++;
 		this.id=counter;
+	}
+	
+	@Override
+	public Order clone() throws CloneNotSupportedException{
+		Order cloned = (Order) super.clone();
+		cloned.product = product;
+		cloned.customer = customer.clone();
+		cloned.allInvoice = new HashSet<>(this.allInvoice);
+		return cloned;
 	}
 	
 	private void initInvoice() {

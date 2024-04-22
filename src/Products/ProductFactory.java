@@ -3,10 +3,10 @@ package Products;
 import eNums.eProduct;
 
 public class ProductFactory {
-	public static Product createProduct(eProduct type,String serial,String productName,double costPrice,double sellingPrice,int stock,double weight) {
+	public static Product createProduct(eProduct type,String serial,String productName,double costPrice,double sellingPrice,int stock,double weight,String destCountry) {
 		switch(type) {
 		case eProductWebsite:
-			return new ProductSoldThroughWebsite(serial, productName, costPrice, sellingPrice, stock,weight);
+			return new ProductSoldThroughWebsite(serial, productName, costPrice, sellingPrice, stock,weight,destCountry);
 		case eProductStore:
 			return new ProductSoldInStore(serial, productName, costPrice, sellingPrice, stock,weight);
 		case eProductWholesalers: 

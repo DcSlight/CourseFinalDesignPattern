@@ -2,11 +2,26 @@ package Products;
 import Exception.StockException;
 import Order.Order;
 
-public class ProductSoldThroughWebsite extends Product{
+public class ProductSoldThroughWebsite extends Product implements Cloneable{
+	
+	private String destCountry;
 
 	public ProductSoldThroughWebsite(String serial, String productName, double costPrice, double sellingPrice,
-			int stock,double weight) {
+			int stock,double weight,String destCountry) {
 		super(serial, productName, costPrice, sellingPrice, stock,weight);
+		this.destCountry = destCountry;
+	}
+	
+	public ProductSoldThroughWebsite clone() throws CloneNotSupportedException{
+		return (ProductSoldThroughWebsite) super.clone();
+	}
+
+	public String getDestCountry() {
+		return destCountry;
+	}
+
+	public void setDestCountry(String destCountry) {
+		this.destCountry = destCountry;
 	}
 
 	@Override
@@ -22,6 +37,9 @@ public class ProductSoldThroughWebsite extends Product{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		ProductSoldThroughWebsite p = (ProductSoldThroughWebsite)(obj);
+		if(!destCountry.equals(p.getDestCountry()))
+			return false;
 		return true;
 	}//TODO: need to update
 
@@ -35,6 +53,7 @@ public class ProductSoldThroughWebsite extends Product{
 	public String toString() {
 		StringBuffer st = new StringBuffer();
 		st.append("Product type: " + this.getClass().getSimpleName() + "\n");
+		st.append("Dest Country: " + destCountry);
 		st.append("Total Profit: " + (float)getTotalProfit() + "$\n");
 		st.append(super.toString());
 		return st.toString();

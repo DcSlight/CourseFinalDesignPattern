@@ -6,7 +6,7 @@ import java.util.Objects;
 import Components.Contact;
 import Interfaces.IObserver;
 
-public abstract class ShippingCompany implements IObserver{
+public abstract class ShippingCompany implements IObserver,Cloneable{
 	protected int id;
 	private static int counter=0;
 	protected Contact contact;
@@ -18,6 +18,14 @@ public abstract class ShippingCompany implements IObserver{
 		counter++;
 		this.id=counter;
 	}
+	
+	@Override
+	public ShippingCompany clone() throws CloneNotSupportedException{
+		ShippingCompany cloned = (ShippingCompany) super.clone();
+		cloned.contact = this.contact.clone();
+		return cloned;
+	}
+	
 	
 	public abstract String getName();
 	

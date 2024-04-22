@@ -5,7 +5,7 @@ import Products.Product;
 import Shipping.ShippingCompany;
 import eNums.eShipType;
 
-public class WebsiteOrder extends Order{
+public class WebsiteOrder extends Order implements Cloneable{
 	
 	private ShippingCompany company;
 	private eShipType type;
@@ -16,6 +16,12 @@ public class WebsiteOrder extends Order{
 		this.company = company;
 		this.type = type;
 		this.shippingPrice = shippingPrice;
+	}
+	
+	public WebsiteOrder clone() throws CloneNotSupportedException{
+		WebsiteOrder cloned = (WebsiteOrder) super.clone();
+		cloned.company = this.company.clone(); // Deep copy
+        return cloned;
 	}
 
 	public ShippingCompany getCompany() {

@@ -6,7 +6,7 @@ import java.util.Set;
 import Exception.StockException;
 import Order.Order;
 
-public abstract class Product {
+public abstract class Product implements Cloneable{
 	protected String serial;
 	protected String productName;
 	protected double costPrice;
@@ -36,6 +36,13 @@ public abstract class Product {
 		this.orders = p.getOrders();
 		this.weight = p.getWeight();
 	}//TODO: delete
+	
+	@Override
+	public Product clone() throws CloneNotSupportedException{
+		Product cloned = (Product) super.clone();
+		cloned.orders = new LinkedHashSet<>(this.orders);
+		return cloned;
+	}
 	
 	public double getWeight() {
 		return weight;
@@ -136,7 +143,7 @@ public abstract class Product {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(costPrice, orders, productName, sellingPrice, serial, stock);
+		return Objects.hash(serial);
 	}
 
 
@@ -149,18 +156,17 @@ public abstract class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		return (costPrice == other.costPrice)
-				&& orders.equals(other.orders)
-				&& productName.equals(other.productName)
-				&& (sellingPrice ==other.sellingPrice)
-				&& serial.equals(other.serial)
-				&& stock == other.stock
-				&& weight == other.weight;
+		if(!serial.equals(other.getSerial()))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer st = new StringBuffer();
+		st.append("Product serial: " + serial);
+		st.append("Product Name: " + productName);
+		st.append("Product Weight: " + weight + "kg");
 		st.append("Current Stock: " + stock + "\n");
 		st.append("Orders:\n" + getAllOrders() + "\n\n");
 		return st.toString();

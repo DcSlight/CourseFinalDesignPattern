@@ -32,6 +32,7 @@ public class SystemFacade {
 	private Set<ShippingCompany> companies;
 	private ObserverManagment obs;
 	private OrderController orderContorller;
+	private Memento memento;
 	
 	private SystemFacade() {
 		this.products = new HashSet<>();
@@ -42,6 +43,7 @@ public class SystemFacade {
 		initProducts();//according to the assignment - hard coded 9 products
 		obs = new ObserverManagment();
 		initObservers();
+		backUpSystem();
 	}
 	
 	private void initObservers() {
@@ -80,10 +82,14 @@ public class SystemFacade {
 			order = new Order(product,customer,amount);
 		}
 		orderContorller.updateOrders(order, product);
-	}
+	}//TODO: return String
 	
-	public void undoOrder() {
-		orderContorller.undoOrder();
+	public String undoOrder() {
+		if(orderContorller.haveOrders()) {
+			orderContorller.undoOrder();
+			return "Undo has been success!\n";
+		}
+		return "There are no orders to do undo\n";
 	}
 	
 	public Product getProductBySerial(String serial) {
@@ -130,6 +136,46 @@ public class SystemFacade {
 	}
 	
 	
+	public void backUpSystem() {
+		memento = createMemento();
+	}
+	
+	public void restoreSystem() {
+		setMemento(this.memento);
+	}
+	
+	private Memento createMemento() {
+		return new Memento(products,companies,orderContorller);
+	}
+	
+	private void setMemento(Memento m) {
+		this.products = m.products;
+		this.companies = m.companies;
+		this.orderContorller = m.orderContorller;
+	}
+	
+	public static class Memento{
+		
+		private Set<Product> products;
+		private ShippingInvoker shippingInvoker;
+		private Set<ShippingCompany> companies;
+		private ObserverManagment obs;
+		private OrderController orderContorller;
+		
+		private Memento(Set<Product> products,Set<ShippingCompany> companies,OrderController orderContorller) {
+			this.products = new HashSet<>();
+			this.companies = new HashSet<>();
+			try { 
+				for(Product product: products) 
+					this.products.add(product.clone());
+				for(ShippingCompany company : companies) 
+						this.companies.add(company.clone());
+				this.orderContorller = orderContorller.clone();//TODO: fix
+			} catch (CloneNotSupportedException e) {
+			}
+		}
+	}
+	
 	private void initCompanies() {
 		Contact contactDHL = new Contact("Yossi-DHL","0522801897");
 		ShippingCompany dhl = new DHL(contactDHL,20);
@@ -149,9 +195,9 @@ public class SystemFacade {
 	}
 	
 	private void initProducts() {
-		Product p1 = new ProductSoldThroughWebsite("AAB12", "Iphone 15 protector", 7.5,87.58 , 400, 0.25);
-		Product p2 = new ProductSoldThroughWebsite("199BA", "TV", 1200,2750 , 10, 13.6);
-		Product p3 = new ProductSoldThroughWebsite("78FHC", "JBL", 210.5,453.2 , 62, 1.23);
+		Product p1 = new ProductSoldThroughWebsite("AAB12", "Iphone 15 protector", 7.5,87.58 , 400, 0.25,"Israel");
+		Product p2 = new ProductSoldThroughWebsite("199BA", "TV", 1200,2750 , 10, 13.6,"USA");
+		Product p3 = new ProductSoldThroughWebsite("78FHC", "JBL", 210.5,453.2 , 62, 1.23,"Germany");
 	
 		Product p4 = new ProductSoldInStore("AHDHB2", "Battery", 12.5, 25, 20, 0.2);
 		Product p5 = new ProductSoldInStore("AFCHP7", "Coat", 45.6, 350, 62, 1.7);
