@@ -12,21 +12,28 @@ import eNums.eShipType;
 
 public class Program {
 	
-	
-	public static final String ADD_PRODUCT="1";
-	public static final String ADD_ORDER="4";
-	public static final String PRINT_PRODUCT_DETAILS="6";
-	public static final String PRINT_ALL_PRODUCTS="7";
-	public static final String EXIT_1="E";
-	public static final String EXIT_2="e";
-	public static final Boolean POSITIVE=true;
+	public static final String ADD_PRODUCT = "1";
+	public static final String REMOVE_PRODUCT = "2";
+	public static final String EDIT_PRODUCT_STOCK = "3";
+	public static final String ADD_ORDER = "4";
+	public static final String UNDO_ORDER = "5";
+	public static final String PRINT_PRODUCT_DETAILS = "6";
+	public static final String PRINT_ALL_PRODUCTS = "7";
+	public static final String PRINT_PRODUCT_ORDERS = "8";
+	public static final String BACKUP_SYSTEM = "9";
+	public static final String RESTORE_SYSTEM = "10";
+	public static final String EXIT_1 = "E";
+	public static final String EXIT_2 = "e";
+	public static final Boolean POSITIVE = true;
 
 	public static void main(String[] args) throws Exception  {
 		Scanner sc = new Scanner(System.in);
 		SystemFacade systemFacade = SystemFacade.getInstance();
 		boolean flag = true;
 		String option;
-		System.out.println("Welcome to the System!");
+		System.out.println("--------------------------------------");
+		System.out.println("\tWelcome to the System!");
+		System.out.println("--------------------------------------");
 		do {
 			System.out.println("1 - To add a product");
 			System.out.println("2 - To remove a product");
@@ -44,14 +51,29 @@ public class Program {
 			case ADD_PRODUCT:
 				addProductMenu(sc,systemFacade);
 				break;
+			case REMOVE_PRODUCT:
+				removeProduct(sc,systemFacade);
+				break;
+			case EDIT_PRODUCT_STOCK:
+				editProductStock(sc,systemFacade);
+				break;
 			case ADD_ORDER:
 				addOrderMenu(sc,systemFacade);
+				break;
+			case UNDO_ORDER:
+				systemFacade.undoOrder();
 				break;
 			case PRINT_PRODUCT_DETAILS:
 				printSpecificProduct(sc,systemFacade);
 				break;
 			case PRINT_ALL_PRODUCTS:
 				System.out.println(systemFacade.getAllProducts());
+				break;
+			case PRINT_PRODUCT_ORDERS:
+				break;
+			case BACKUP_SYSTEM:
+				break;
+			case RESTORE_SYSTEM:
 				break;
 			case EXIT_1:
 			case EXIT_2:
@@ -66,7 +88,7 @@ public class Program {
 		}while(flag);
 	}
 	
-	public static void addOrderMenu(Scanner sc,SystemFacade systemFacade) {
+	public static void addOrderMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product;
 		int amount;
 		Customer customer =getCustomerDetailsMenu(sc);
@@ -90,7 +112,7 @@ public class Program {
 		}
 	}
 	
-	public static void printSpecificProduct(Scanner sc,SystemFacade systemFacade) {
+	public static void printSpecificProduct(Scanner sc, SystemFacade systemFacade) {
 		Product product;
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
@@ -99,6 +121,22 @@ public class Program {
 		}
 		System.out.println(product);
 		
+	}
+	
+	public static void removeProduct(Scanner sc, SystemFacade systemFacade)
+	{
+		Product product;
+		product = getProductBySerial(sc, systemFacade);
+		systemFacade.removeProduct(product);
+	}
+	
+	public static void editProductStock(Scanner sc, SystemFacade systemFacade)
+	{
+		Product product;
+		int stock;
+		product = getProductBySerial(sc, systemFacade);
+		stock = (int) getValidNumber(sc, "Enter a stock number for the product\n", POSITIVE, Integer.class);
+		product.setStock(stock);
 	}
 	
 	public static Product getProductBySerial(Scanner sc,SystemFacade systemFacade) {
@@ -111,7 +149,7 @@ public class Program {
 	}
 	
 	
-	public static <T extends Number> Number getValidNumber(Scanner scanner, String prompt,boolean needToBePositive,Class<T> type) {
+	public static <T extends Number> Number getValidNumber(Scanner scanner, String prompt, boolean needToBePositive, Class<T> type) {
 		Number tmp = null;
 		while (true) {
             System.out.print(prompt);
@@ -157,12 +195,13 @@ public class Program {
 		double costPrice, sellingPrice,weight;
 		int stock;
 		do {
+			System.out.println();
 			System.out.println("1- To create an wholesalers product");
 			System.out.println("2- To create a product in store");
 			System.out.println("3- To create a product through website");
 			option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
 			System.out.println("Enter product serial");
-			serial=sc.nextLine();
+			serial=sc.nextLine();//TODO: add sorted and check if serial already exist 
 			System.out.println("Enter product name");
 			productName=sc.nextLine();
 			costPrice = (double)getValidNumber(sc,"Enter cost price\n",POSITIVE,Double.class);
@@ -198,6 +237,7 @@ public class Program {
 		int tmp;
 		boolean flag=true;
 		do {
+			System.out.println();
 			System.out.println("Please pick the shipping type");
 			System.out.println("For Express enter 1");
 			System.out.println("For Standard enter 2");

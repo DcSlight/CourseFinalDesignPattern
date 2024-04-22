@@ -105,6 +105,10 @@ public class SystemFacade {
 		this.products.add(product);
 	}
 	
+	public void removeProduct(Product product) {
+		this.products.remove(product);
+	}
+	
 	public Set<Product> getProducts(){
 		return this.products;
 	}
