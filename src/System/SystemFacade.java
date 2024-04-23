@@ -86,11 +86,11 @@ public class SystemFacade {
 	}
 
 	
-	public void makeOrder(Product product,Customer customer, int amount,eShipType type) throws StockException {
+	public void makeOrder(Product product,Customer customer, int amount,eShipType type,String destCountry) throws StockException {
 		Order order;
 		if(product instanceof ProductSoldThroughWebsite) {
 			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
-			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice());
+			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice(),destCountry);
 			obs.sendProductSold(product);
 			//TODO: fix the string msg of syso
 			System.out.println(ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice() + "\n" + ANSI_RESET);
@@ -226,9 +226,9 @@ public class SystemFacade {
 	}
 	
 	private void initProducts() {
-		Product p1 = new ProductSoldThroughWebsite("AAB12", "Iphone 15 protector", 7.5,87.58 , 400, 0.25,"Israel");
-		Product p2 = new ProductSoldThroughWebsite("199BA", "TV", 1200,2750 , 10, 13.6,"USA");
-		Product p3 = new ProductSoldThroughWebsite("78FHC", "JBL", 210.5,453.2 , 62, 1.23,"Germany");
+		Product p1 = new ProductSoldThroughWebsite("AAB12", "Iphone 15 protector", 7.5,87.58 , 400, 0.25);
+		Product p2 = new ProductSoldThroughWebsite("199BA", "TV", 1200,2750 , 10, 13.6);
+		Product p3 = new ProductSoldThroughWebsite("78FHC", "JBL", 210.5,453.2 , 62, 1.23);
 	
 		Product p4 = new ProductSoldInStore("AHDHB2", "Battery", 12.5, 25, 20, 0.2);
 		Product p5 = new ProductSoldInStore("AFCHP7", "Coat", 45.6, 350, 62, 1.7);

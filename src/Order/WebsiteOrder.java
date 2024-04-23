@@ -1,5 +1,7 @@
 package Order;
 
+import java.util.Objects;
+
 import Components.Customer;
 import Products.Product;
 import Shipping.ShippingCompany;
@@ -10,12 +12,22 @@ public class WebsiteOrder extends Order implements Cloneable{
 	private ShippingCompany company;
 	private eShipType type;
 	private double shippingPrice;
+	private String destCountry;
 
-	public WebsiteOrder(Product product, Customer customer, int amount,ShippingCompany company, eShipType type,double shippingPrice) {
+	public WebsiteOrder(Product product, Customer customer, int amount,ShippingCompany company, eShipType type,double shippingPrice,String destCountry) {
 		super(product, customer, amount);
 		this.company = company;
 		this.type = type;
 		this.shippingPrice = shippingPrice;
+		this.destCountry= destCountry;
+	}
+	
+	public String getCountry() {
+		return destCountry;
+	}
+	
+	public void setCountry(String destCountry) {
+		this.destCountry = destCountry;
 	}
 	
 	public WebsiteOrder clone() throws CloneNotSupportedException{
@@ -48,9 +60,34 @@ public class WebsiteOrder extends Order implements Cloneable{
 		this.shippingPrice = shippingPrice;
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(company, destCountry, shippingPrice, type);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (!(obj instanceof WebsiteOrder)) {
+			return false;
+		}
+		return true;//TODO: need to fix
+	}
+
 	public String toString() {
 		StringBuffer st = new StringBuffer();
 		st.append(super.toString());
+		st.append("Dest Country: " + destCountry + "\n");
 		st.append(company + "\ntype: " + type.name() + "\nshipping price: " + shippingPrice );
 		return st.toString();
 	}

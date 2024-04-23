@@ -112,7 +112,10 @@ public class Program {
 			type = eShipType.eNone;
 		amount = (int) getValidNumber(sc,"How many of this product so you want to order?\n", POSITIVE, Integer.class);
 		try {
-			systemFacade.makeOrder(product, customer, amount, type);
+			String destCountry;
+			System.out.println("Enter Dest Country");
+			destCountry=sc.nextLine();
+			systemFacade.makeOrder(product, customer, amount, type,destCountry);
 		}catch(StockException e ) {
 			System.out.println(e.getMessage());
 		}catch(Exception e) {
@@ -239,18 +242,15 @@ public class Program {
 		stock = (int)getValidNumber(sc,"Enter stock\n",POSITIVE,Integer.class);
 		switch(option) {
 		case 1:
-			product = ProductFactory.createProduct(eProduct.eProductWholesalers, serial, productName, costPrice, sellingPrice, stock, weight,null);
+			product = ProductFactory.createProduct(eProduct.eProductWholesalers, serial, productName, costPrice, sellingPrice, stock, weight);
 			flag=false;
 			break;
 		case 2:
-			product = ProductFactory.createProduct(eProduct.eProductStore, serial, productName, costPrice, sellingPrice, stock, weight,null);
+			product = ProductFactory.createProduct(eProduct.eProductStore, serial, productName, costPrice, sellingPrice, stock, weight);
 			flag=false;
 			break;
 		case 3:
-			String destCountry;
-			System.out.println("Enter Dest Country");
-			destCountry=sc.nextLine();
-			product = ProductFactory.createProduct(eProduct.eProductWebsite, serial, productName, costPrice, sellingPrice, stock, weight,destCountry);
+			product = ProductFactory.createProduct(eProduct.eProductWebsite, serial, productName, costPrice, sellingPrice, stock, weight);
 			flag=false;
 			break;
 		default:
