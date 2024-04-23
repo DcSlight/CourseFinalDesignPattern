@@ -99,7 +99,7 @@ public class Program {
 		Customer customer;
 		int amount;
 		eShipType type;
-		
+		String destCountry =null;
 		printTitle("\t  Make an order", SystemFacade.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
@@ -107,15 +107,15 @@ public class Program {
 			return;
 		}
 		customer = getCustomerDetailsMenu(sc);
-		if(product instanceof ProductSoldThroughWebsite)
+		if(product instanceof ProductSoldThroughWebsite) {
 			type = getShipTypeMenu(sc);
+			System.out.println("Enter Dest Country");
+			destCountry=sc.nextLine();
+		}
 		else
 			type = eShipType.eNone;
 		amount = (int) getValidNumber(sc,"How many of this product so you want to order?\n", POSITIVE, Integer.class);
 		try {
-			String destCountry;
-			System.out.println("Enter Dest Country");
-			destCountry=sc.nextLine();
 			systemFacade.makeOrder(product, customer, amount, type,destCountry);
 		}catch(StockException e ) {
 			System.out.println(e.getMessage());

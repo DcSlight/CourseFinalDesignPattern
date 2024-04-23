@@ -181,7 +181,7 @@ public class SystemFacade {
 	}
 	
 	private void setMemento(Memento m) {
-		Set<Product> tmp = new HashSet<>();
+		this.companies = m.companies;
 		this.products = m.products;
 		for(Product product : this.products) {
 			product.setMemento();
@@ -192,12 +192,11 @@ public class SystemFacade {
 	
 	public static class Memento{
 		private Set<Product> products;
-		private ShippingInvoker shippingInvoker;
 		private Set<ShippingCompany> companies;
-		private ObserverManagment obs;
 		private OrderController orderContorller;
 		
 		private Memento(Set<Product> products,Set<ShippingCompany> companies,OrderController orderContorller) {
+			this.companies = new HashSet<>(companies);
 			this.products = new HashSet<>();
 			for(Product product : products) {
 				product.createMemento();
