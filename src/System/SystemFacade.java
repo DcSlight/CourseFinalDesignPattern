@@ -138,8 +138,12 @@ public class SystemFacade {
 		this.products.add(product);
 	}
 	
-	public void removeProduct(Product product) {
-		this.products.remove(product);
+	public boolean removeProduct(Product product) {
+		if(products.contains(product)) {
+			this.products.remove(product);
+			return true;
+		}
+		return false;
 	}
 	
 	public Set<Product> getProducts(){

@@ -136,8 +136,9 @@ public class Program {
 	{
 		Product product;
 		product = getProductBySerial(sc, systemFacade);
-		systemFacade.removeProduct(product);
-		successMsg("Product was removes successfully!\n");
+		if(systemFacade.removeProduct(product))
+			successMsg("Product was removes successfully!\n");
+		failureMsg("Product is not exist\n");
 	}
 	
 	public static void editProductStock(Scanner sc, SystemFacade systemFacade)
