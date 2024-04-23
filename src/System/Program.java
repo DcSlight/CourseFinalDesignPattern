@@ -177,7 +177,7 @@ public class Program {
                 		scanner.nextLine();//clean buffer
                 		return tmp;
                 	}
-                	throw  new InputMismatchException();
+                	throw new InputMismatchException();
                 }
                 scanner.nextLine();//clean buffer
                 return tmp;	
@@ -206,6 +206,7 @@ public class Program {
 		System.out.println(systemFacade.getProductOrders(product) + "\n");
 	}
 	
+	
 	public static void addProductMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product = null;
 		boolean flag=true;
@@ -214,53 +215,54 @@ public class Program {
 		double costPrice, sellingPrice,weight;
 		int stock;
 		printTitle("\t  Add a Product", SystemFacade.ANSI_CYAN);
-		do {
-			System.out.println();
-			System.out.println("1- To create an wholesalers product");
-			System.out.println("2- To create a product in store");
-			System.out.println("3- To create a product through website");//TODO: check wrong option
-			option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
-			System.out.println("Enter product serial");
-			serial=sc.nextLine();//TODO: add sorted
-			if (systemFacade.isSerialProductExist(serial)) {
-				flag=false;
-				failureMsg("Serial product is already exist!\n");
-				break; //TODO: check if to do a inner while 
-			}
-			System.out.println("Enter product name");
-			productName=sc.nextLine();
-			costPrice = (double)getValidNumber(sc,"Enter cost price\n",POSITIVE,Double.class);
-			sellingPrice = (double)getValidNumber(sc,"Enter selling price\n",POSITIVE,Double.class);
-			weight = (double)getValidNumber(sc,"Enter weight\n",POSITIVE,Double.class);
-			stock = (int)getValidNumber(sc,"Enter stock\n",POSITIVE,Integer.class);
-			switch(option) {
-			case 1:
-				product = ProductFactory.createProduct(eProduct.eProductWholesalers, serial, productName, costPrice, sellingPrice, stock, weight,null);
-				flag=false;
-				break;
-			case 2:
-				product = ProductFactory.createProduct(eProduct.eProductStore, serial, productName, costPrice, sellingPrice, stock, weight,null);
-				flag=false;
-				break;
-			case 3:
-				String destCountry;
-				System.out.println("Enter Dest Country");
-				destCountry=sc.nextLine();
-				product = ProductFactory.createProduct(eProduct.eProductWebsite, serial, productName, costPrice, sellingPrice, stock, weight,destCountry);
-				flag=false;
-				break;
-			default:
-				failureMsg("Invalid input\n");
-				flag=true;
-				break;
-			}
-		}while(flag);
+		System.out.println();
+		System.out.println("1- To create an wholesalers product");
+		System.out.println("2- To create a product in store");
+		System.out.println("3- To create a product through website");//TODO: check wrong option
+		option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
+		if(option > 3) {
+			failureMsg("Invalid Input\n");
+			return;
+		}
+		System.out.println("Enter product serial");
+		serial=sc.nextLine();//TODO: add sorted
+		if (systemFacade.isSerialProductExist(serial)) {
+			flag=false;
+			failureMsg("Serial product is already exist!\n");
+			return; //TODO: check if to do a inner while 
+		}
+		System.out.println("Enter product name");
+		productName=sc.nextLine();
+		costPrice = (double)getValidNumber(sc,"Enter cost price\n",POSITIVE,Double.class);
+		sellingPrice = (double)getValidNumber(sc,"Enter selling price\n",POSITIVE,Double.class);
+		weight = (double)getValidNumber(sc,"Enter weight\n",POSITIVE,Double.class);
+		stock = (int)getValidNumber(sc,"Enter stock\n",POSITIVE,Integer.class);
+		switch(option) {
+		case 1:
+			product = ProductFactory.createProduct(eProduct.eProductWholesalers, serial, productName, costPrice, sellingPrice, stock, weight,null);
+			flag=false;
+			break;
+		case 2:
+			product = ProductFactory.createProduct(eProduct.eProductStore, serial, productName, costPrice, sellingPrice, stock, weight,null);
+			flag=false;
+			break;
+		case 3:
+			String destCountry;
+			System.out.println("Enter Dest Country");
+			destCountry=sc.nextLine();
+			product = ProductFactory.createProduct(eProduct.eProductWebsite, serial, productName, costPrice, sellingPrice, stock, weight,destCountry);
+			flag=false;
+			break;
+		default:
+			failureMsg("Invalid input\n");
+			flag=true;
+			break;
+		}
 		if(product!=null) {
 			systemFacade.addProduct(product);
 			successMsg("Product was added successfully!\n");
 		}
-	}
-	
+	}	
 	
 	public static eShipType getShipTypeMenu(Scanner sc) {
 		eShipType type=eShipType.eNone;
