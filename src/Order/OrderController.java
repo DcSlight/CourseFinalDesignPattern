@@ -5,9 +5,11 @@ import java.util.Stack;
 import Exception.StockException;
 import Interfaces.IUndoCommand;
 import Products.Product;
+import Products.Product.ProductMemento;
 
 public class OrderController implements Cloneable{
 	private Stack<IUndoCommand> stack;
+	private OrderControllerMemento memento;
 	
 	public OrderController() {
 		stack = new Stack<>();
@@ -26,6 +28,31 @@ public class OrderController implements Cloneable{
 
         return clonedController;
     }
+	
+	public void createMemento() {
+		memento= new OrderControllerMemento(stack);
+	}
+
+	public void setMemento() {
+		this.stack = memento.stack;
+	}
+	
+	public static class OrderControllerMemento{
+		private Stack<IUndoCommand> stack;
+		
+		private OrderControllerMemento(Stack<IUndoCommand> stack){
+			this.stack =new Stack<>();
+			Stack<IUndoCommand> tmp = new Stack<>();
+			while(!stack.isEmpty()) {
+				tmp.push(stack.pop());
+			}
+			
+			while(!tmp.isEmpty()) {
+				stack.push(tmp.lastElement());
+				this.stack.push(tmp.pop());
+			}
+		}
+	}
 	
 	public boolean haveOrders() {
 		if (stack.isEmpty())

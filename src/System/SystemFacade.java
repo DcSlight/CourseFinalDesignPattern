@@ -14,6 +14,7 @@ import Order.Order;
 import Order.OrderController;
 import Order.WebsiteOrder;
 import Products.Product;
+import Products.Product.ProductMemento;
 import Products.ProductSoldInStore;
 import Products.ProductSoldThroughWebsite;
 import Products.ProductSoldToWholesalers;
@@ -180,13 +181,16 @@ public class SystemFacade {
 	}
 	
 	private void setMemento(Memento m) {
+		Set<Product> tmp = new HashSet<>();
 		this.products = m.products;
-		this.companies = m.companies;
-		this.orderContorller = m.orderContorller;
+		for(Product product : this.products) {
+			product.setMemento();
+		}
+		m.orderContorller.setMemento();
+		this.orderContorller=m.orderContorller;
 	}
 	
 	public static class Memento{
-		
 		private Set<Product> products;
 		private ShippingInvoker shippingInvoker;
 		private Set<ShippingCompany> companies;
@@ -195,15 +199,12 @@ public class SystemFacade {
 		
 		private Memento(Set<Product> products,Set<ShippingCompany> companies,OrderController orderContorller) {
 			this.products = new HashSet<>();
-			this.companies = new HashSet<>();
-			try { 
-				for(Product product: products) 
-					this.products.add(product.clone());
-				for(ShippingCompany company : companies) 
-						this.companies.add(company.clone());
-				this.orderContorller = orderContorller.clone();//TODO: fix
-			} catch (CloneNotSupportedException e) {
+			for(Product product : products) {
+				product.createMemento();
+				this.products.add(product);
 			}
+			orderContorller.createMemento();
+			this.orderContorller = orderContorller;
 		}
 	}
 	

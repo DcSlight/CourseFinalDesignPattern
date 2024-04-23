@@ -2,6 +2,7 @@ package System;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 import Components.Customer;
 import Exception.StockException;
 import Products.Product;
