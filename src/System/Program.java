@@ -13,6 +13,7 @@ import eNums.eShipType;
 
 public class Program {
 	
+	public static final String INIT_SYSTEM = "0";
 	public static final String ADD_PRODUCT = "1";
 	public static final String REMOVE_PRODUCT = "2";
 	public static final String EDIT_PRODUCT_STOCK = "3";
@@ -36,6 +37,7 @@ public class Program {
 		System.out.println("\tWelcome to the System!");
 		System.out.println("--------------------------------------" + SystemFacade.ANSI_RESET);
 		do {
+			System.out.println("0 - To init the system");
 			System.out.println("1 - To add a product");
 			System.out.println("2 - To remove a product");
 			System.out.println("3 - To edit a product stock");
@@ -49,6 +51,9 @@ public class Program {
 			System.out.println("E/e - To Exit");
 			option = sc.nextLine();
 			switch(option) {
+			case INIT_SYSTEM:
+				systemFacade.initSystems(); 
+				break;
 			case ADD_PRODUCT:
 				addProductMenu(sc,systemFacade);
 				break;
@@ -75,11 +80,11 @@ public class Program {
 				break;
 			case BACKUP_SYSTEM:
 				systemFacade.backUpSystem();
-				System.out.println("System has been backup");
+				successMsg("System has been backup!\n");
 				break;
 			case RESTORE_SYSTEM:
 				systemFacade.restoreSystem();
-				System.out.println("System has been restore");
+				successMsg("System has been restore!\n");
 				break;
 			case EXIT_1:
 			case EXIT_2:
@@ -104,7 +109,6 @@ public class Program {
 		printTitle("\t  Make an order", SystemFacade.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
-			failureMsg("Product was not found!\n");
 			return;
 		}
 		orderSerial = getSerialOrder(sc,systemFacade);
@@ -146,7 +150,6 @@ public class Program {
 		printTitle("\t  Product details:", SystemFacade.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
-			failureMsg("Product was not found!\n");
 			return;
 		}
 		System.out.println(product);
@@ -175,9 +178,17 @@ public class Program {
 	public static Product getProductBySerial(Scanner sc,SystemFacade systemFacade) {
 		Product product;
 		String serial;
+		if(systemFacade.getProducts().isEmpty()) {
+			failureMsg("There are no products in the system\n");
+			return null;
+		}
 		System.out.println("Please Enter a product serial");
 		serial = sc.nextLine();
 		product=systemFacade.getProductBySerial(serial);
+		if(product == null) {
+			failureMsg("Product was not found!\n");
+			return null;
+		}
 		return product;
 	}
 	
@@ -224,7 +235,8 @@ public class Program {
 		Product product = null;
 		printTitle("\t The Product Orders", SystemFacade.ANSI_CYAN);
 		product = getProductBySerial(sc, systemFacade);
-		System.out.println(systemFacade.getProductOrders(product) + "\n");
+		if(product !=null)
+			System.out.println(systemFacade.getProductOrders(product) + "\n");
 	}
 	
 	

@@ -1,8 +1,6 @@
 package System;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -16,7 +14,6 @@ import Order.Order;
 import Order.OrderController;
 import Order.WebsiteOrder;
 import Products.Product;
-import Products.Product.ProductMemento;
 import Products.ProductSoldInStore;
 import Products.ProductSoldThroughWebsite;
 import Products.ProductSoldToWholesalers;
@@ -53,10 +50,14 @@ public class SystemFacade {
 		this.companies = new HashSet<>();
 		this.orderContorller = new OrderController();
 		initCompanies();
-		initProducts();//according to the assignment - hard coded 9 products
+	
 		obs = new ObserverManagment();
 		initObservers();
 		backUpSystem();
+	}
+	
+	public void initSystems() {
+		initProductsAndOrders();//according to the assignment - hard coded 9 products and 27 Orders
 	}
 	
 	private void initObservers() {
@@ -96,7 +97,7 @@ public class SystemFacade {
 			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice(),destCountry,serial);
 			obs.sendProductSold(product);
 			//TODO: fix the string msg of syso
-			System.out.println(ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice() + "\n" + ANSI_RESET);
+			System.out.println(ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+(float)receiver.getPrice() + "\n" + ANSI_RESET);
 		}else {
 			order = new Order(product,customer,amount,serial);
 		}
@@ -236,26 +237,62 @@ public class SystemFacade {
 		addShippment(eShipType.eStandard,fedExStandard);
 	}
 	
-	private void initProducts() {
+	private void initProductsAndOrders() {
+		Customer c1 = new Customer("Avi","0506007070");
+		Customer c2 = new Customer("Yoram","0526038971");
+		Customer c3 = new Customer("Shlomi","0526238771");
 		Product p1 = new ProductSoldThroughWebsite("AAB12", "Iphone 15 protector", 7.5,87.58 , 400, 0.25);
 		Product p2 = new ProductSoldThroughWebsite("199BA", "TV", 1200,2750 , 10, 13.6);
 		Product p3 = new ProductSoldThroughWebsite("78FHC", "JBL", 210.5,453.2 , 62, 1.23);
 	
-		Product p4 = new ProductSoldInStore("AHDHB2", "Battery", 12.5, 25, 20, 0.2);
+		Product p4 = new ProductSoldInStore("AHDHB2", "Battery", 12.5, 25, 120, 0.2);
 		Product p5 = new ProductSoldInStore("AFCHP7", "Coat", 45.6, 350, 62, 1.7);
 		Product p6 = new ProductSoldInStore("PDKSU2", "T-Shirt", 12.5,98, 158, 1.1);
 		
 		Product p7 = new ProductSoldToWholesalers("P3MCJU", "Coca Cola", 0.5, 10, 2500, 0.6);
 		Product p8 = new ProductSoldToWholesalers("MXJQXT", "Mayo", 15, 17, 1230, 5);
 		Product p9 = new ProductSoldToWholesalers("MPXL2K", "Toilet Paper", 5, 45, 5800, 3);
+		try {
 		addProduct(p1);
+		makeOrder(p1,c1,5,eShipType.eExpress,"Israel","A1");
+		makeOrder(p1,c2,10,eShipType.eStandard,"USA","A2");
+		makeOrder(p1,c3,7,eShipType.eExpress,"Spain","A3");
 		addProduct(p2);
+		makeOrder(p2,c1,1,eShipType.eExpress,"Germany","B1");
+		makeOrder(p2,c2,2,eShipType.eStandard,"England","B2");
+		makeOrder(p2,c3,1,eShipType.eExpress,"Netherlands","B3");
 		addProduct(p3);
+		makeOrder(p3,c1,12,eShipType.eStandard,"Egypt","C1");
+		makeOrder(p3,c2,7,eShipType.eStandard,"Brazil","C2");
+		makeOrder(p3,c3,8,eShipType.eStandard,"Argentina","C3");
+		
 		addProduct(p4);
+		makeOrder(p4,c1,2,eShipType.eNone,null,"D1");
+		makeOrder(p4,c2,3,eShipType.eNone,null,"D2");
+		makeOrder(p4,c3,4,eShipType.eNone,null,"D3");
 		addProduct(p5);
+		makeOrder(p5,c1,2,eShipType.eNone,null,"E1");
+		makeOrder(p5,c2,3,eShipType.eNone,null,"E2");
+		makeOrder(p5,c3,1,eShipType.eNone,null,"E3");
 		addProduct(p6);
+		makeOrder(p6,c1,12,eShipType.eNone,null,"F1");
+		makeOrder(p6,c2,13,eShipType.eNone,null,"F2");
+		makeOrder(p6,c3,11,eShipType.eNone,null,"F3");
+		
 		addProduct(p7);
+		makeOrder(p7,c1,120,eShipType.eNone,null,"G1");
+		makeOrder(p7,c2,130,eShipType.eNone,null,"G2");
+		makeOrder(p7,c3,110,eShipType.eNone,null,"G3");
 		addProduct(p8);
-		addProduct(p9);		
+		makeOrder(p8,c1,220,eShipType.eNone,null,"H1");
+		makeOrder(p8,c2,330,eShipType.eNone,null,"H2");
+		makeOrder(p8,c3,410,eShipType.eNone,null,"H3");
+		addProduct(p9);	
+		makeOrder(p9,c1,750,eShipType.eNone,null,"I1");
+		makeOrder(p9,c2,450,eShipType.eNone,null,"I2");
+		makeOrder(p9,c3,580,eShipType.eNone,null,"I3");
+		}catch(StockException e) {
+			//nothing - it is built in 
+		}
 	}
 }
