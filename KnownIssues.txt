@@ -4,7 +4,7 @@
    express and standard shipping for any company.
    
    #Note:
-   On DHLExpressCommand there is a method setNewProduct() that's do nothing.
-   The reason for that is, that we want that DHL express can support in the future 
-   a calculation for the shipping with product data.  
+   On DHLExpressCommand there is a method setNewProduct() that does nothing.
+   The reason for that is, we wanted "DHL express" to be able to support any future 
+   calculations with product data.  
 
