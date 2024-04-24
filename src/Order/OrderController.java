@@ -40,6 +40,20 @@ public class OrderController{
 		}
 	}
 	
+	public void removeOrdersOfProducts(Product p) {
+		Stack<IUndoCommand> tmp = new Stack<>();
+		while(!this.stack.isEmpty()) {
+			IUndoCommand cmd = this.stack.pop();
+			Product pTemp =cmd.getProduct();
+			if(!pTemp.equals(p))
+				tmp.push(cmd);
+		}
+		
+		while(!tmp.isEmpty()) {
+			this.stack.push(tmp.pop());
+		}
+	}
+	
 	public boolean haveOrders() {
 		if (stack.isEmpty())
 			return false;

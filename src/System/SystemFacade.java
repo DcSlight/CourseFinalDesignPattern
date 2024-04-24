@@ -34,6 +34,7 @@ public class SystemFacade {
 	private OrderController orderContorller;
 	private Memento memento;
 	
+	public static final int IMPORT_TAX = 20;
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_YELLOW = "\u001B[33m";
 	public static final String ANSI_CYAN = "\u001B[36m";
@@ -66,12 +67,12 @@ public class SystemFacade {
 		}
 	}
 	
-	public double getSystemTotalProfit() {
+	public float getSystemTotalProfit() {
 		double sum=0;
 		for(Product product : products) {
 			sum+=product.getTotalProfit();
 		}
-		return sum;
+		return (float)sum;
 	}
 	
 	public String getAllProducts() {
@@ -152,6 +153,7 @@ public class SystemFacade {
 	}
 	
 	public boolean removeProduct(Product product) {
+		orderContorller.removeOrdersOfProducts(product);
 		if(products.contains(product)) {
 			this.products.remove(product);
 			return true;
@@ -221,7 +223,7 @@ public class SystemFacade {
 	
 	private void initCompanies() {
 		Contact contactDHL = new Contact("Yossi-DHL","0522801897");
-		ShippingCompany dhl = new DHL(contactDHL,20);
+		ShippingCompany dhl = new DHL(contactDHL,IMPORT_TAX);
 		addCompany(dhl);
 		ICommand dhlExpress = ShippingFactory.createShippingCommand(eShipType.eExpress, dhl);
 		addShippment(eShipType.eExpress, dhlExpress);
@@ -229,7 +231,7 @@ public class SystemFacade {
 		addShippment(eShipType.eStandard,dhlStandard);
 		
 		Contact contactFedEx = new Contact("Roy-FedEx","0522206896");
-		ShippingCompany fedEx = new FedEx(contactFedEx,70);
+		ShippingCompany fedEx = new FedEx(contactFedEx,IMPORT_TAX);
 		addCompany(fedEx);
 		ICommand fedExExpress = ShippingFactory.createShippingCommand(eShipType.eExpress, fedEx);
 		addShippment(eShipType.eExpress,fedExExpress);

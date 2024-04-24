@@ -129,7 +129,7 @@ public class Program {
 		try {
 			systemFacade.makeOrder(product, customer, amount, type,destCountry,orderSerial);
 		}catch(StockException e ) {
-			System.out.println(e.getMessage());
+			failureMsg(e.getMessage() + "\n");
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -160,9 +160,13 @@ public class Program {
 	{
 		Product product;
 		product = getProductBySerial(sc, systemFacade);
-		if(systemFacade.removeProduct(product))
-			successMsg("Product was removes successfully!\n");
-		failureMsg("Product is not exist\n");
+		if(product == null)
+			return;
+		if(systemFacade.removeProduct(product)) {
+			successMsg("Product was removed successfully!\n");
+			return;
+		}
+		failureMsg("Product has not been removed\n");
 	}
 	
 	public static void editProductStock(Scanner sc, SystemFacade systemFacade)

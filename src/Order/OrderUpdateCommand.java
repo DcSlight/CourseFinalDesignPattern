@@ -15,6 +15,11 @@ public class OrderUpdateCommand implements IUndoCommand{
 		this.order=order;
 		this.stock = product.getStock();
 	}
+	
+	@Override
+	public Product getProduct() {
+		return this.product;
+	}
 
 	@Override
 	public void execute() throws StockException {
