@@ -8,7 +8,7 @@ import Order.Order;
 import System.SystemFacade;
 import System.SystemFacade.Memento;
 
-public abstract class Product implements Cloneable,Comparable<Product> {
+public abstract class Product implements Comparable<Product> {
 	protected String serial;
 	protected String productName;
 	protected double costPrice;
@@ -49,13 +49,6 @@ public abstract class Product implements Cloneable,Comparable<Product> {
 				return true;
 		}
 		return false;
-	}
-
-	@Override
-	public Product clone() throws CloneNotSupportedException {
-		Product cloned = (Product) super.clone();
-		cloned.orders = new LinkedHashSet<>(this.orders);
-		return cloned;
 	}
 
 	public double getWeight() {

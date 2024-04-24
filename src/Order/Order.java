@@ -12,7 +12,7 @@ import Products.ProductSoldInStore;
 import Products.ProductSoldToWholesalers;
 import eNums.eInvoice;
 
-public class Order implements Cloneable{
+public class Order{
 	private String serial;
 	private int amount;
 	private double profit;
@@ -28,15 +28,6 @@ public class Order implements Cloneable{
 		this.allInvoice = new HashSet<IInvoice>();
 		this.serial = serial;
 		initInvoice();	
-	}
-	
-	@Override
-	public Order clone() throws CloneNotSupportedException{
-		Order cloned = (Order) super.clone();
-		cloned.product = product;
-		cloned.customer = customer.clone();
-		cloned.allInvoice = new HashSet<>(this.allInvoice);
-		return cloned;
 	}
 	
 	private void initInvoice() {

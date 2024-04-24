@@ -7,27 +7,13 @@ import Interfaces.IUndoCommand;
 import Products.Product;
 import Products.Product.ProductMemento;
 
-public class OrderController implements Cloneable{
+public class OrderController{
 	private Stack<IUndoCommand> stack;
 	private OrderControllerMemento memento;
 	
 	public OrderController() {
 		stack = new Stack<>();
 	}
-	
-	@Override
-    public OrderController clone() throws CloneNotSupportedException {
-        OrderController clonedController = (OrderController) super.clone();
-        clonedController.stack = new Stack<>();
-        clonedController.stack.addAll(stack);
-        // Deep copy of the stack (create new command instances)
-//        for (IUndoCommand command : this.stack) {
-//            // Assuming IUndoCommand has a clone method (implemented by its concrete classes)
-//            clonedController.stack.push(((OrderUpdateCommand)command).clone());
-//        }
-
-        return clonedController;
-    }
 	
 	public void createMemento() {
 		memento= new OrderControllerMemento(stack);

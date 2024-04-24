@@ -175,7 +175,7 @@ public class Program {
 	public static Product getProductBySerial(Scanner sc,SystemFacade systemFacade) {
 		Product product;
 		String serial;
-		System.out.println("Please Enter serial number");
+		System.out.println("Please Enter a product serial");
 		serial = sc.nextLine();
 		product=systemFacade.getProductBySerial(serial);
 		return product;
