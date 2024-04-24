@@ -7,24 +7,24 @@
 
 
 ------------------ Exercise --------------------------------------
-Final Course Design Pattern
+Final Course Design Pattern (10119)
 
 ------------------ Folder Structure ------------------------------
 1. SRC - java classes
 	Packages:
-	A. Components - Contains all the independent classes.
-	B. eNums - Contains all the eNums of the System.
-	C. Exceptions - Contains customize exceptions.
+	A. Components - Contains all of the independent classes.
+	B. eNums - Contains all of the eNums of the System.
+	C. Exceptions - Contains customized exceptions.
 	D. Interfaces - Contains interfaces.
-	E. Invoice - Contains all the classes referred to Invoice.
-	F. Observer - Contains all the classes referred to Observer.
-	G. Order - Contains all the classes referred to Order.
-	H. Products - Contains all the classes referred to Products.
-	I. Shipping - Contains all the classes referred to Shipping.
+	E. Invoice - Contains all of the classes referring to Invoice.
+	F. Observer - Contains all of the classes referring to Observer.
+	G. Order - Contains all of the classes referring to Order.
+	H. Products - Contains all of the classes referring to Products.
+	I. Shipping - Contains all of the classes referring to Shipping.
 	J. System - Contains the main class of the system and program.
-	K. Utils - Contains the classes that referred to the UI.
+	K. Utils - Contains the classes that refer to the UI.
 	
-2. Files - Include all nested files that explains the project.
+2. Files - Include all nested files that explain the project.
 	A. my classes.pdf
 	B. my design pattern.pdf
 	C. class diagram.pdf
@@ -33,10 +33,11 @@ Final Course Design Pattern
 	
 
 ------------------ About -----------------------------------------
-*) The System focus on creating Exams.
-*) The System have a collection of repositories that each one of them have questions and answers.
-*) The System can create an automatic and manual exams.
-*) The System stores repositories as a binary file on Repositories Folder
+*) The System focuses on ordering products through different methods.
+*) As per request the system load with 9 different products.
+*) The System supports an undo function as requested.
+*) The System calculates the best price for online shopping according to the guidelines 
+
 
 ------------------ How To Run -------------------------------------
 #Note: We already made 2 repositories that will be auto load when you run the project ("math", "general").
