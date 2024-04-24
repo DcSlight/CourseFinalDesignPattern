@@ -1,7 +1,6 @@
 package Shipping;
 
 import Components.Contact;
-import Interfaces.IObserver;
 import Observer.ObserverManagment;
 
 public class DHL extends ShippingCompany{

@@ -9,12 +9,21 @@ public class ProductSoldToWholesalers extends Product{
 		super(serial, productName, costPrice, sellingPrice, stock,weight);
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
+	}
 	
 
 	@Override
 	public void addOrder(Order order) throws StockException {
 		decreaseStock(order.getAmount());
-		//TODO: check if need to throw error for type 
 		orders.add(order);
 	}
 	

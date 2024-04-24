@@ -24,7 +24,6 @@ public class ShippingInvoker {
 		case eStandard:
 			addStandardCommand(command);
 		default:
-			//TODO: think about it
 			break;
 		}
 	}
@@ -46,7 +45,7 @@ public class ShippingInvoker {
 			setCommandsProduct(standardCommands, product);
 			return calculateCheapestShipping(standardCommands);
 		default:
-			return null;// TODO: exception
+			return null;
 		}
 	}
 

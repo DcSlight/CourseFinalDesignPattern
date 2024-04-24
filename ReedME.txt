@@ -1,0 +1,66 @@
+------------------ README ----------------------------------------
+
+------------------ STUDENTS --------------------------------------
+1. Idan Noyshul 207813635
+2. Sapir Gilany 322358284
+3. Roi Dor 207813379
+
+
+------------------ Exercise --------------------------------------
+Final Course Design Pattern
+
+------------------ Folder Structure ------------------------------
+1. SRC - java classes
+	Packages:
+	A. Components - Contains all the independent classes.
+	B. eNums - Contains all the eNums of the System.
+	C. Exceptions - Contains customize exceptions.
+	D. Interfaces - Contains interfaces.
+	E. Invoice - Contains all the classes referred to Invoice.
+	F. Observer - Contains all the classes referred to Observer.
+	G. Order - Contains all the classes referred to Order.
+	H. Products - Contains all the classes referred to Products.
+	I. Shipping - Contains all the classes referred to Shipping.
+	J. System - Contains the main class of the system and program.
+	K. Utils - Contains the classes that referred to the UI.
+	
+2. Files - Include all nested files that explains the project.
+	A. my classes.pdf
+	B. my design pattern.pdf
+	C. class diagram.pdf
+	D. class diagram.html
+	E. Short video.mp4
+	
+
+------------------ About -----------------------------------------
+*) The System focus on creating Exams.
+*) The System have a collection of repositories that each one of them have questions and answers.
+*) The System can create an automatic and manual exams.
+*) The System stores repositories as a binary file on Repositories Folder
+
+------------------ How To Run -------------------------------------
+#Note: We already made 2 repositories that will be auto load when you run the project ("math", "general").
+#Note: On Exams folder you can find exams and solutions txt files that we created using the systems.
+1. Open Program.java, run the code to open the console menu
+2. To view the repositories click 1 and than you will see a menu to the repositories.
+3. To create an automatic exam press 2 and than check the repository that you want to use.
+4. To create an Manual exam press 2 and than check the repository that you want to use.
+5. To save a new repository you must go back to the main manu (pressing -1) and than press 0 to Exit and than type "true" to save your changes.
+
+
+------------------ Program Logic -----------------------------------
+1.On automatic exam the program can not pick a question that have more than one correct answer, only Manual exam can do that
+  If the User pick the max amount of questions in the repository to create an automatic exam but one of the question have more than 1 correct answer
+  the program will print an error.
+2.Exceptions Classes:
+  A) MultipleChoiceException.java
+  B) NumOfQuestionsException.java
+  C) ExamException.java
+3. Note that if there are none correct answers the exam will print "none of the answers are correct".
+3. Note that if there are more than 1 correct answers the exam will print "More than one answer is correct"
+  
+  
+  
+  
+  
+  

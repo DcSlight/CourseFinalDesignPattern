@@ -16,7 +16,7 @@ public class ProductSoldThroughWebsite extends Product{
 	@Override
 	public int hashCode() {
 		return super.hashCode();
-	}//TODO: need to update
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -27,7 +27,7 @@ public class ProductSoldThroughWebsite extends Product{
 		if (getClass() != obj.getClass())
 			return false;
 		return true;
-	}//TODO: need to update
+	}
 
 
 	public void addOrder(Order order) throws StockException {

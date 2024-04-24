@@ -8,6 +8,7 @@ import Exception.StockException;
 import Products.Product;
 import Products.ProductFactory;
 import Products.ProductSoldThroughWebsite;
+import Utils.FormatsUtils;
 import eNums.eProduct;
 import eNums.eShipType;
 
@@ -33,9 +34,9 @@ public class Program {
 		SystemFacade systemFacade = SystemFacade.getInstance();
 		boolean flag = true;
 		String option;
-		System.out.println(SystemFacade.ANSI_CYAN_BOLD + "--------------------------------------");
+		System.out.println(FormatsUtils.ANSI_CYAN_BOLD + "--------------------------------------");
 		System.out.println("\tWelcome to the System!");
-		System.out.println("--------------------------------------" + SystemFacade.ANSI_RESET);
+		System.out.println("--------------------------------------" + FormatsUtils.ANSI_RESET);
 		do {
 			System.out.println("0 - To init the system");
 			System.out.println("1 - To add a product");
@@ -80,19 +81,19 @@ public class Program {
 				break;
 			case BACKUP_SYSTEM:
 				systemFacade.backUpSystem();
-				successMsg("System has been backup!\n");
+				FormatsUtils.successMsg("System has been backup!\n");
 				break;
 			case RESTORE_SYSTEM:
 				systemFacade.restoreSystem();
-				successMsg("System has been restore!\n");
+				FormatsUtils.successMsg("System has been restore!\n");
 				break;
 			case EXIT_1:
 			case EXIT_2:
-				System.out.println(SystemFacade.ANSI_CYAN_BRIGHT + "Have a good day" + SystemFacade.ANSI_RESET);
+				System.out.println(FormatsUtils.ANSI_CYAN_BRIGHT + "Have a good day" + FormatsUtils.ANSI_RESET);
 				flag=false;
 				break;
 			default:
-				failureMsg("Invalid Input\n");
+				FormatsUtils.failureMsg("Invalid Input\n");
 				break;
 			}
 			
@@ -106,14 +107,14 @@ public class Program {
 		eShipType type;
 		String destCountry =null;
 		String orderSerial;
-		printTitle("\t  Make an order", SystemFacade.ANSI_CYAN);
+		FormatsUtils.printTitle("\t  Make an order", FormatsUtils.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
 			return;
 		}
 		orderSerial = getSerialOrder(sc,systemFacade);
 		if(orderSerial == null){
-			failureMsg("Order serial is already exist in the system!\n");
+			FormatsUtils.failureMsg("Order serial is already exist in the system!\n");
 			return;
 		}
 		customer = getCustomerDetailsMenu(sc);
@@ -128,8 +129,9 @@ public class Program {
 		amount = (int) getValidNumber(sc,"How many of this product so you want to order?\n", POSITIVE, Integer.class);
 		try {
 			systemFacade.makeOrder(product, customer, amount, type,destCountry,orderSerial);
+			FormatsUtils.successMsg("Order added successfully!\n");
 		}catch(StockException e ) {
-			failureMsg(e.getMessage() + "\n");
+			FormatsUtils.failureMsg(e.getMessage() + "\n");
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -147,7 +149,7 @@ public class Program {
 	
 	public static void printSpecificProduct(Scanner sc, SystemFacade systemFacade) {
 		Product product;
-		printTitle("\t  Product details:", SystemFacade.ANSI_CYAN);
+		FormatsUtils.printTitle("\t  Product details:", FormatsUtils.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
 			return;
@@ -163,10 +165,10 @@ public class Program {
 		if(product == null)
 			return;
 		if(systemFacade.removeProduct(product)) {
-			successMsg("Product was removed successfully!\n");
+			FormatsUtils.successMsg("Product was removed successfully!\n");
 			return;
 		}
-		failureMsg("Product has not been removed\n");
+		FormatsUtils.failureMsg("Product has not been removed\n");
 	}
 	
 	public static void editProductStock(Scanner sc, SystemFacade systemFacade)
@@ -176,21 +178,21 @@ public class Program {
 		product = getProductBySerial(sc, systemFacade);
 		stock = (int) getValidNumber(sc, "Enter a stock number for the product\n", POSITIVE, Integer.class);
 		product.setStock(stock);
-		successMsg("Product stock was updated!\n");
+		FormatsUtils.successMsg("Product stock was updated!\n");
 	}
 	
 	public static Product getProductBySerial(Scanner sc,SystemFacade systemFacade) {
 		Product product;
 		String serial;
 		if(systemFacade.getProducts().isEmpty()) {
-			failureMsg("There are no products in the system\n");
+			FormatsUtils.failureMsg("There are no products in the system\n");
 			return null;
 		}
 		System.out.println("Please Enter a product serial");
 		serial = sc.nextLine();
 		product=systemFacade.getProductBySerial(serial);
 		if(product == null) {
-			failureMsg("Product was not found!\n");
+			FormatsUtils.failureMsg("Product was not found!\n");
 			return null;
 		}
 		return product;
@@ -218,7 +220,7 @@ public class Program {
                 scanner.nextLine();//clean buffer
                 return tmp;	
             } catch (InputMismatchException e) {
-            	failureMsg("Invalid input! Please enter a valid integer.\n");
+            	FormatsUtils.failureMsg("Invalid input! Please enter a valid integer.\n");
                 scanner.nextLine();//clean buffer
             }
         }
@@ -237,7 +239,7 @@ public class Program {
 	
 	public static void printProductOrders(Scanner sc, SystemFacade systemFacade) {
 		Product product = null;
-		printTitle("\t The Product Orders", SystemFacade.ANSI_CYAN);
+		FormatsUtils.printTitle("\t The Product Orders", FormatsUtils.ANSI_CYAN);
 		product = getProductBySerial(sc, systemFacade);
 		if(product !=null)
 			System.out.println(systemFacade.getProductOrders(product) + "\n");
@@ -246,27 +248,25 @@ public class Program {
 	
 	public static void addProductMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product = null;
-		boolean flag=true;
 		int option;
 		String serial,productName;
 		double costPrice, sellingPrice,weight;
 		int stock;
-		printTitle("\t  Add a Product", SystemFacade.ANSI_CYAN);
+		FormatsUtils.printTitle("\t  Add a Product", FormatsUtils.ANSI_CYAN);
 		System.out.println();
 		System.out.println("1- To create an wholesalers product");
 		System.out.println("2- To create a product in store");
-		System.out.println("3- To create a product through website");//TODO: check wrong option
+		System.out.println("3- To create a product through website");
 		option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
 		if(option > 3) {
-			failureMsg("Invalid Input\n");
+			FormatsUtils.failureMsg("Invalid Input\n");
 			return;
 		}
 		System.out.println("Enter product serial");
-		serial=sc.nextLine();//TODO: add sorted
+		serial=sc.nextLine();
 		if (systemFacade.isSerialProductExist(serial)) {
-			flag=false;
-			failureMsg("Serial product is already exist!\n");
-			return; //TODO: check if to do a inner while 
+			FormatsUtils.failureMsg("Serial product is already exist!\n");
+			return;
 		}
 		System.out.println("Enter product name");
 		productName=sc.nextLine();
@@ -277,24 +277,20 @@ public class Program {
 		switch(option) {
 		case 1:
 			product = ProductFactory.createProduct(eProduct.eProductWholesalers, serial, productName, costPrice, sellingPrice, stock, weight);
-			flag=false;
 			break;
 		case 2:
 			product = ProductFactory.createProduct(eProduct.eProductStore, serial, productName, costPrice, sellingPrice, stock, weight);
-			flag=false;
 			break;
 		case 3:
 			product = ProductFactory.createProduct(eProduct.eProductWebsite, serial, productName, costPrice, sellingPrice, stock, weight);
-			flag=false;
 			break;
 		default:
-			failureMsg("Invalid input\n");
-			flag=true;
+			FormatsUtils.failureMsg("Invalid input\n");
 			break;
 		}
 		if(product!=null) {
 			systemFacade.addProduct(product);
-			successMsg("Product was added successfully!\n");
+			FormatsUtils.successMsg("Product was added successfully!\n");
 		}
 	}	
 	
@@ -324,18 +320,6 @@ public class Program {
 		}while(flag);
 		return type;
 	}
-	
-	public static void printTitle(String msg, String color) {
-		System.out.println(color + "--------------------------------------");
-		System.out.println(msg);
-		System.out.println("--------------------------------------" + SystemFacade.ANSI_RESET);
-	}
-	
-	public static void successMsg(String msg) {
-		System.out.println(SystemFacade.ANSI_GREEN_BRIGHT + msg + SystemFacade.ANSI_RESET);
-	}
-	public static void failureMsg(String msg) {
-		System.out.println(SystemFacade.ANSI_RED_BRIGHT + msg + SystemFacade.ANSI_RESET);
-	}
+
 
 }

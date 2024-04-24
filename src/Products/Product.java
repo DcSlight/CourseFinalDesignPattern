@@ -5,8 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import Exception.StockException;
 import Order.Order;
-import System.SystemFacade;
-import System.SystemFacade.Memento;
+import Utils.FormatsUtils;
 
 public abstract class Product implements Comparable<Product> {
 	protected String serial;
@@ -27,16 +26,6 @@ public abstract class Product implements Comparable<Product> {
 		this.orders = new LinkedHashSet<>();
 		this.weight = weight;
 	}
-
-	public Product(Product p) {
-		this.serial = p.getSerial();
-		this.productName = p.getProductName();
-		this.costPrice = p.getCostPrice();
-		this.sellingPrice = p.getSellingPrice();
-		this.stock = p.getStock();
-		this.orders = p.getOrders();
-		this.weight = p.getWeight();
-	}// TODO: delete
 	
 	@Override
     public int compareTo(Product other) {
@@ -71,7 +60,7 @@ public abstract class Product implements Comparable<Product> {
 		if (orders.isEmpty())
 			return "There are no orders!";
 		for (Order o : orders) {
-			st.append(SystemFacade.ANSI_YELLOW + "\nOrder " + num + ":\n" + SystemFacade.ANSI_RESET);
+			st.append(FormatsUtils.ANSI_YELLOW + "\nOrder " + num + ":\n" + FormatsUtils.ANSI_RESET);
 			st.append(o.toString() + "\n");
 			num++;
 		}
@@ -201,7 +190,7 @@ public abstract class Product implements Comparable<Product> {
 		st.append("Product Name: " + productName + "\n");
 		st.append("Product Weight: " + weight + "kg\n");
 		st.append("Current Stock: " + stock + "\n");
-		st.append(SystemFacade.ANSI_YELLOW_UNDERLINED + "\nAll orders:\n" + SystemFacade.ANSI_RESET);
+		st.append(FormatsUtils.ANSI_YELLOW_UNDERLINED + "\nAll orders:\n" + FormatsUtils.ANSI_RESET);
 		st.append(getAllOrders() + "\n\n");
 		return st.toString();
 	}

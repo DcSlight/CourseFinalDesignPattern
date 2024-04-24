@@ -75,7 +75,7 @@ public class WebsiteOrder extends Order{
 		if (!(obj instanceof WebsiteOrder)) {
 			return false;
 		}
-		return true;//TODO: need to fix
+		return true;
 	}
 
 	public String toString() {

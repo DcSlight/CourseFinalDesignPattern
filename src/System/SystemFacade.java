@@ -22,6 +22,7 @@ import Shipping.FedEx;
 import Shipping.ShippingCompany;
 import Shipping.ShippingFactory;
 import Shipping.ShippingInvoker;
+import Utils.FormatsUtils;
 import eNums.eShipType;
 
 
@@ -35,15 +36,7 @@ public class SystemFacade {
 	private Memento memento;
 	
 	public static final int IMPORT_TAX = 20;
-	public static final String ANSI_RESET = "\u001B[0m";
-	public static final String ANSI_YELLOW = "\u001B[33m";
-	public static final String ANSI_CYAN = "\u001B[36m";
-	public static final String ANSI_CYAN_BOLD = "\033[1;36m";
-	public static final String ANSI_YELLOW_UNDERLINED = "\033[4;33m";
-	public static final String ANSI_YELLOW_BOLD = "\033[1;33m";
-	public static final String ANSI_CYAN_BRIGHT = "\033[0;96m";
-	public static final String ANSI_RED_BRIGHT = "\033[0;91m"; 
-	public static final String ANSI_GREEN_BRIGHT = "\033[0;92m";
+	
 	
 	private SystemFacade() {
 		this.products = new TreeSet<>();
@@ -78,15 +71,15 @@ public class SystemFacade {
 	public String getAllProducts() {
 		int num = 1;
 		StringBuffer st = new StringBuffer();
-		st.append(ANSI_CYAN + "\n--------------------------------------\n");
+		st.append(FormatsUtils.ANSI_CYAN + "\n--------------------------------------\n");
 		st.append("\t  All Products\n");
-		st.append("--------------------------------------\n" + ANSI_RESET);
+		st.append("--------------------------------------\n" + FormatsUtils.ANSI_RESET);
 		for(Product product : products) {
-			st.append(ANSI_YELLOW_BOLD + "Product " + num + ":\n" + ANSI_RESET);
+			st.append(FormatsUtils.ANSI_YELLOW_BOLD + "Product " + num + ":\n" + FormatsUtils.ANSI_RESET);
 			st.append(product.toString());
 			num++;
 		}
-		st.append(ANSI_CYAN_BRIGHT + "\nTotal profit in system: " + getSystemTotalProfit()+"$\n" + ANSI_RESET);
+		st.append(FormatsUtils.ANSI_CYAN_BRIGHT + "\nTotal profit in system: " + getSystemTotalProfit()+"$\n" + FormatsUtils.ANSI_RESET);
 		return st.toString();
 	}
 
@@ -97,8 +90,8 @@ public class SystemFacade {
 			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
 			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice(),destCountry,serial);
 			obs.sendProductSold(product);
-			//TODO: fix the string msg of syso
-			System.out.println(ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+(float)receiver.getPrice() + "\n" + ANSI_RESET);
+			System.out.println(FormatsUtils.ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"
+								+(float)receiver.getPrice() + "\n" + FormatsUtils.ANSI_RESET);
 		}else {
 			order = new Order(product,customer,amount,serial);
 		}
@@ -108,9 +101,9 @@ public class SystemFacade {
 	public String undoOrder() {
 		if(orderContorller.haveOrders()) {
 			orderContorller.undoOrder();
-			return ANSI_GREEN_BRIGHT + "Undo has been success!\n" + ANSI_RESET;
+			return FormatsUtils.ANSI_GREEN_BRIGHT + "Undo has been success!\n" + FormatsUtils.ANSI_RESET;
 		}
-		return ANSI_RED_BRIGHT + "There are no orders to do undo\n" + ANSI_RESET;
+		return FormatsUtils.ANSI_RED_BRIGHT + "There are no orders to do undo\n" + FormatsUtils.ANSI_RESET;
 	}
 	
 	public Product getProductBySerial(String serial) {

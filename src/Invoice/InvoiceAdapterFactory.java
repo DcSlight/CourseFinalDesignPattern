@@ -4,9 +4,7 @@ import Components.Customer;
 import Interfaces.IInvoice;
 import Products.Product;
 import Products.ProductSoldInStore;
-import Products.ProductSoldThroughWebsite;
 import eNums.eInvoice;
-import eNums.eProduct;
 
 public class InvoiceAdapterFactory {
 	
@@ -21,14 +19,13 @@ public class InvoiceAdapterFactory {
 			currency=DOLLAR;
 		}
 		
-		
 		switch(type) {
 		case eAccountantInvoice:
 			return new AccountantInvoiceAdapter(new AccountantInvoice(customer,product.getProductName(),product.getSellingPrice(),product.getCostPrice(),amount,currency));
 		case eCustomerInvoice:
 			return new CustomerInvoiceAdapter(new CustomerInvoice(customer,product.getProductName(),product.getSellingPrice(),amount,currency));
 		case eNone: //sold in Website
-			return null;//TODO: check
+			return null;
 		default:
 			throw new IllegalArgumentException();
 		}

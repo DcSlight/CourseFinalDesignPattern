@@ -2,7 +2,6 @@ package Invoice;
 
 import Components.Customer;
 import Interfaces.IInvoice;
-import eNums.eProduct;
 
 public class AccountantInvoice implements IInvoice{
 	
