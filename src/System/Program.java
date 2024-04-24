@@ -176,6 +176,8 @@ public class Program {
 		Product product;
 		int stock;
 		product = getProductBySerial(sc, systemFacade);
+		if(product == null)
+			return;
 		stock = (int) getValidNumber(sc, "Enter a stock number for the product\n", POSITIVE, Integer.class);
 		product.setStock(stock);
 		FormatsUtils.successMsg("Product stock was updated!\n");
