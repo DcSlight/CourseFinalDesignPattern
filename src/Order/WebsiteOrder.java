@@ -14,8 +14,8 @@ public class WebsiteOrder extends Order implements Cloneable{
 	private double shippingPrice;
 	private String destCountry;
 
-	public WebsiteOrder(Product product, Customer customer, int amount,ShippingCompany company, eShipType type,double shippingPrice,String destCountry) {
-		super(product, customer, amount);
+	public WebsiteOrder(Product product, Customer customer, int amount,ShippingCompany company, eShipType type,double shippingPrice,String destCountry,String serial) {
+		super(product, customer, amount,serial);
 		this.company = company;
 		this.type = type;
 		this.shippingPrice = shippingPrice;

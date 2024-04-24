@@ -100,15 +100,22 @@ public class Program {
 		int amount;
 		eShipType type;
 		String destCountry =null;
+		String orderSerial;
 		printTitle("\t  Make an order", SystemFacade.ANSI_CYAN);
 		product=getProductBySerial(sc,systemFacade);
 		if(product == null){
 			failureMsg("Product was not found!\n");
 			return;
 		}
+		orderSerial = getSerialOrder(sc,systemFacade);
+		if(orderSerial == null){
+			failureMsg("Order serial is already exist in the system!\n");
+			return;
+		}
 		customer = getCustomerDetailsMenu(sc);
 		if(product instanceof ProductSoldThroughWebsite) {
 			type = getShipTypeMenu(sc);
+			sc.nextLine();//CLEAN BUFFER
 			System.out.println("Enter Dest Country");
 			destCountry=sc.nextLine();
 		}
@@ -116,12 +123,22 @@ public class Program {
 			type = eShipType.eNone;
 		amount = (int) getValidNumber(sc,"How many of this product so you want to order?\n", POSITIVE, Integer.class);
 		try {
-			systemFacade.makeOrder(product, customer, amount, type,destCountry);
+			systemFacade.makeOrder(product, customer, amount, type,destCountry,orderSerial);
 		}catch(StockException e ) {
 			System.out.println(e.getMessage());
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	public static String getSerialOrder(Scanner sc, SystemFacade systemFacade) {
+		String serial;
+		System.out.println("Please enter order serial");
+		serial = sc.nextLine();
+		if(systemFacade.isSerialOrderExist(serial))
+			return null;
+		return serial;
+			
 	}
 	
 	public static void printSpecificProduct(Scanner sc, SystemFacade systemFacade) {

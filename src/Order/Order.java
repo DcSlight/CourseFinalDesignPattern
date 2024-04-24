@@ -13,23 +13,21 @@ import Products.ProductSoldToWholesalers;
 import eNums.eInvoice;
 
 public class Order implements Cloneable{
-	private int id;//TODO: change to String 4.5
-	private static int counter = 0;
+	private String serial;
 	private int amount;
 	private double profit;
 	private Product product;
 	private Customer customer;
 	private Set<IInvoice> allInvoice;
 	
-	public Order(Product product, Customer customer,int amount) {
+	public Order(Product product, Customer customer,int amount,String serial) {
 		this.product = product;
 		this.customer = customer;
 		this.amount = amount;
 		this.profit  = (product.getSellingPrice() - product.getCostPrice()) * amount;
 		this.allInvoice = new HashSet<IInvoice>();
-		initInvoice();
-		counter++;
-		this.id=counter;
+		this.serial = serial;
+		initInvoice();	
 	}
 	
 	@Override
@@ -80,11 +78,15 @@ public class Order implements Cloneable{
 	public Set<IInvoice> getInvoice() {
 		return allInvoice;
 	}
+	
+	public String getSerial() {
+		return this.serial;
+	}
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(serial);
 	}
 
 	@Override
@@ -96,8 +98,7 @@ public class Order implements Cloneable{
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		return customer.equals(other.customer)
-			   && product.equals(other.product);
+		return this.serial.equals(other.serial);
 	}
 	
 	public double getProfit() {
@@ -107,6 +108,7 @@ public class Order implements Cloneable{
 	@Override
 	public String toString() {
 		StringBuffer st = new StringBuffer();
+		st.append("Order serial:" + serial + "\n");
 		st.append(customer + "\n");
 		st.append("Quantity: " + amount + "\n");
 		for(IInvoice invoice : allInvoice) {

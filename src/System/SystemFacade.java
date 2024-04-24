@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
+
 import Components.Contact;
 import Components.Customer;
 import Exception.StockException;
@@ -46,7 +48,7 @@ public class SystemFacade {
 	public static final String ANSI_GREEN_BRIGHT = "\033[0;92m";
 	
 	private SystemFacade() {
-		this.products = new HashSet<>();
+		this.products = new TreeSet<>();
 		this.shippingInvoker = new ShippingInvoker();
 		this.companies = new HashSet<>();
 		this.orderContorller = new OrderController();
@@ -87,16 +89,16 @@ public class SystemFacade {
 	}
 
 	
-	public void makeOrder(Product product,Customer customer, int amount,eShipType type,String destCountry) throws StockException {
+	public void makeOrder(Product product,Customer customer, int amount,eShipType type,String destCountry,String serial) throws StockException {
 		Order order;
 		if(product instanceof ProductSoldThroughWebsite) {
 			IShippingReceiver receiver = shippingInvoker.calculateShippingFee(type, product);
-			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice(),destCountry);
+			order = new WebsiteOrder(product,customer,amount,receiver.getCompany(),type,receiver.getPrice(),destCountry,serial);
 			obs.sendProductSold(product);
 			//TODO: fix the string msg of syso
 			System.out.println(ANSI_YELLOW + "\n"+receiver.getCompany().getName()+" offers the cheapest shipping at $"+receiver.getPrice() + "\n" + ANSI_RESET);
 		}else {
-			order = new Order(product,customer,amount);
+			order = new Order(product,customer,amount,serial);
 		}
 		orderContorller.updateOrders(order, product);
 	}//TODO: return String
@@ -122,6 +124,15 @@ public class SystemFacade {
 		for (Product product : products) {
 			if (product.getSerial().equals(Serial))
 				return true;
+		}
+		return false;
+	}
+	
+	public boolean isSerialOrderExist(String serial) {
+		for (Product product : products) {
+			if(product.isSerialOrderExist(serial)){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -197,7 +208,7 @@ public class SystemFacade {
 		
 		private Memento(Set<Product> products,Set<ShippingCompany> companies,OrderController orderContorller) {
 			this.companies = new HashSet<>(companies);
-			this.products = new HashSet<>();
+			this.products = new TreeSet<>();
 			for(Product product : products) {
 				product.createMemento();
 				this.products.add(product);

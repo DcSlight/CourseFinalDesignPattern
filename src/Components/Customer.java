@@ -2,18 +2,13 @@ package Components;
 
 import java.util.Objects;
 
-public class Customer implements Cloneable{
+public class Customer{
 	private String customerName;
 	private String mobile;
 	
 	public Customer(String customerName, String mobile) {
 		this.customerName = customerName;
 		this.mobile = mobile;
-	}
-	
-	@Override
-	public Customer clone() throws CloneNotSupportedException{
-		return (Customer)super.clone();
 	}
 
 	public String getCustomerName() {

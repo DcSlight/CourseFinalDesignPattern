@@ -8,7 +8,7 @@ import Order.Order;
 import System.SystemFacade;
 import System.SystemFacade.Memento;
 
-public abstract class Product implements Cloneable {
+public abstract class Product implements Cloneable,Comparable<Product> {
 	protected String serial;
 	protected String productName;
 	protected double costPrice;
@@ -37,6 +37,19 @@ public abstract class Product implements Cloneable {
 		this.orders = p.getOrders();
 		this.weight = p.getWeight();
 	}// TODO: delete
+	
+	@Override
+    public int compareTo(Product other) {
+        return this.serial.compareTo(other.serial);
+    }
+	
+	public boolean isSerialOrderExist(String serial) {
+		for(Order order: orders) {
+			if(order.getSerial().equals(serial))
+				return true;
+		}
+		return false;
+	}
 
 	@Override
 	public Product clone() throws CloneNotSupportedException {

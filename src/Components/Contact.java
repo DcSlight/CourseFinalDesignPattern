@@ -2,18 +2,13 @@ package Components;
 
 import java.util.Objects;
 
-public class Contact implements Cloneable{
+public class Contact{
 	private String name;
 	private String whatsApp;
 	
 	public Contact(String name,String whatsApp){
 		this.name=name;
 		this.whatsApp = whatsApp;
-	}
-	
-	public Contact clone() throws CloneNotSupportedException{
-		Contact cloned = (Contact) super.clone();
-		return cloned;
 	}
 
 	public String getName() {
