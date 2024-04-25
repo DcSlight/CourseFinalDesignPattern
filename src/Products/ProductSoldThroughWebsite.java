@@ -8,10 +8,6 @@ public class ProductSoldThroughWebsite extends Product{
 			int stock,double weight) {
 		super(serial, productName, costPrice, sellingPrice, stock,weight);
 	}
-	
-	public ProductSoldThroughWebsite clone() throws CloneNotSupportedException{
-		return (ProductSoldThroughWebsite) super.clone();
-	}
 
 	@Override
 	public int hashCode() {

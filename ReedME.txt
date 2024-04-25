@@ -34,9 +34,11 @@ Final Course Design Pattern (10119)
 
 ------------------ About -----------------------------------------
 *) The System focuses on ordering products through different methods.
-*) As per request the system load with 9 different products.
-*) The System supports an undo function as requested.
-*) The System calculates the best price for online shopping according to the guidelines 
+*) As per request the system load with 9 different products and 3 orders per product.
+*) The System supports an undo function for an order as requested.
+*) The System supports diffrent invoice formats.
+*) The System calculates the best price for website shopping according to the guidelines .
+*) The System supports restore and backups.
 
 
 

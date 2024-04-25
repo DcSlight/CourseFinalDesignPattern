@@ -5,6 +5,6 @@
    
    #Note:
    On DHLExpressCommand there is a method setNewProduct() that does nothing.
-   The reason for that is, we wanted "DHL express" to be able to support any future 
+   The reason for it is that we wanted "DHL express" to be able to support any future 
    calculations with product data.  
 
