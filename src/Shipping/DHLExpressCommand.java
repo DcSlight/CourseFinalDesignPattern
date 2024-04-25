@@ -13,9 +13,7 @@ public class DHLExpressCommand implements ICommand {
     }
     
     @Override
-	public void setNewProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+	public void setNewProduct(Product product) {		
 	}
 
     @Override

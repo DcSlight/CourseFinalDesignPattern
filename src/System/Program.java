@@ -100,15 +100,39 @@ public class Program {
 		}while(flag);
 	}
 	
+	
+	/**
+	 * Ex: 4.5
+	 * @see   InputExmaple: 3 AAB12 A4 Avi 0506007070 1 Israel 3
+	 * @param sc
+	 * @param systemFacade
+	 */
 	public static void addOrderMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product;
 		Customer customer;
 		int amount;
 		eShipType type;
+		eProduct productType;
 		String destCountry =null;
 		String orderSerial;
 		FormatsUtils.printTitle("\t  Make an order", FormatsUtils.ANSI_CYAN);
-		product=getProductBySerial(sc,systemFacade);
+		int option=pickOrderByProductType(sc);
+		switch(option) {
+		case 1:
+			productType=eProduct.eProductWholesalers;
+			break;
+		case 2:
+			productType=eProduct.eProductStore;
+			break;
+		case 3: 
+			productType=eProduct.eProductWebsite;
+			break;
+		default:
+			FormatsUtils.failureMsg("Invalid Input\n");
+			return;
+		}
+		System.out.println(systemFacade.getAllProductsByType(productType));
+		product=getProductBySerialAndType(sc,systemFacade,productType);
 		if(product == null){
 			return;
 		}
@@ -147,6 +171,13 @@ public class Program {
 			
 	}
 	
+	
+	/**
+	 * Ex: 4.7
+	 * @see   InputExmaple: AAB12
+	 * @param sc
+	 * @param systemFacade
+	 */
 	public static void printSpecificProduct(Scanner sc, SystemFacade systemFacade) {
 		Product product;
 		FormatsUtils.printTitle("\t  Product details:", FormatsUtils.ANSI_CYAN);
@@ -158,6 +189,12 @@ public class Program {
 		
 	}
 	
+	/**
+	 * Ex: 4.3
+	 * @see   InputExmaple: AAB12
+	 * @param sc
+	 * @param systemFacade
+	 */
 	public static void removeProduct(Scanner sc, SystemFacade systemFacade)
 	{
 		Product product;
@@ -171,6 +208,13 @@ public class Program {
 		FormatsUtils.failureMsg("Product has not been removed\n");
 	}
 	
+	
+	/**
+	 * Ex: 4.4
+	 * @see   InputExmaple: AAB12 20
+	 * @param sc
+	 * @param systemFacade
+	 */
 	public static void editProductStock(Scanner sc, SystemFacade systemFacade)
 	{
 		Product product;
@@ -193,6 +237,23 @@ public class Program {
 		System.out.println("Please Enter a product serial");
 		serial = sc.nextLine();
 		product=systemFacade.getProductBySerial(serial);
+		if(product == null) {
+			FormatsUtils.failureMsg("Product was not found!\n");
+			return null;
+		}
+		return product;
+	}
+	
+	public static Product getProductBySerialAndType(Scanner sc,SystemFacade systemFacade,eProduct type) {
+		Product product;
+		String serial;
+		if(systemFacade.getProducts().isEmpty()) {
+			FormatsUtils.failureMsg("There are no products in the system\n");
+			return null;
+		}
+		System.out.println("Please Enter a product serial");
+		serial = sc.nextLine();
+		product=systemFacade.getProductBySerialAndType(serial,type);
 		if(product == null) {
 			FormatsUtils.failureMsg("Product was not found!\n");
 			return null;
@@ -239,6 +300,12 @@ public class Program {
 		return c;
 	}
 	
+	/**
+	 * Ex: 4.9
+	 * @see   InputExmaple: AAB12
+	 * @param sc
+	 * @param systemFacade
+	 */
 	public static void printProductOrders(Scanner sc, SystemFacade systemFacade) {
 		Product product = null;
 		FormatsUtils.printTitle("\t The Product Orders", FormatsUtils.ANSI_CYAN);
@@ -247,7 +314,12 @@ public class Program {
 			System.out.println(systemFacade.getProductOrders(product) + "\n");
 	}
 	
-	
+	/**
+	 * Ex: 4.2
+	 * @see   InputExmaple: 1 PCK12  Tami4 60 80 5 20
+	 * @param sc
+	 * @param systemFacade
+	 */
 	public static void addProductMenu(Scanner sc, SystemFacade systemFacade) {
 		Product product = null;
 		int option;
@@ -256,10 +328,7 @@ public class Program {
 		int stock;
 		FormatsUtils.printTitle("\t  Add a Product", FormatsUtils.ANSI_CYAN);
 		System.out.println();
-		System.out.println("1- To create an wholesalers product");
-		System.out.println("2- To create a product in store");
-		System.out.println("3- To create a product through website");
-		option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
+		option=pickProductByType(sc);
 		if(option > 3) {
 			FormatsUtils.failureMsg("Invalid Input\n");
 			return;
@@ -295,6 +364,24 @@ public class Program {
 			FormatsUtils.successMsg("Product was added successfully!\n");
 		}
 	}	
+	
+	public static int pickProductByType(Scanner sc) {
+		int option;
+		System.out.println("1- To create an wholesalers product");
+		System.out.println("2- To create a product in store");
+		System.out.println("3- To create a product through website");
+		option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
+		return option;
+	}
+	
+	public static int pickOrderByProductType(Scanner sc) {
+		int option;
+		System.out.println("1- To create an order of wholesalers product");
+		System.out.println("2- To create an order of product in store");
+		System.out.println("3- To create an order of product through website");
+		option = (int) getValidNumber(sc,"Enter your choice\n",POSITIVE,Integer.class);
+		return option;
+	}
 	
 	public static eShipType getShipTypeMenu(Scanner sc) {
 		eShipType type=eShipType.eNone;

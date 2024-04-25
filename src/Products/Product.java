@@ -6,10 +6,12 @@ import java.util.Set;
 import Exception.StockException;
 import Order.Order;
 import Utils.FormatsUtils;
+import eNums.eProduct;
 
 public abstract class Product implements Comparable<Product> {
 	protected String serial;
 	protected String productName;
+	protected eProduct type;
 	protected double costPrice;
 	protected double sellingPrice;
 	protected int stock;
@@ -17,7 +19,7 @@ public abstract class Product implements Comparable<Product> {
 	protected Set<Order> orders;
 	protected ProductMemento memento;
 
-	public Product(String serial, String productName, double costPrice, double sellingPrice, int stock, double weight) {
+	public Product(eProduct type,String serial, String productName, double costPrice, double sellingPrice, int stock, double weight) {
 		this.serial = serial;
 		this.productName = productName;
 		this.costPrice = costPrice;
@@ -25,6 +27,11 @@ public abstract class Product implements Comparable<Product> {
 		this.stock = stock;
 		this.orders = new LinkedHashSet<>();
 		this.weight = weight;
+		this.type = type;
+	}
+	
+	public eProduct getType() {
+		return this.type;
 	}
 	
 	@Override
@@ -38,6 +45,15 @@ public abstract class Product implements Comparable<Product> {
 				return true;
 		}
 		return false;
+	}
+	
+	public String getDetails() {
+		StringBuffer st = new StringBuffer();
+		st.append("Product serial: " + serial + "\n");
+		st.append("Product Name: " + productName + "\n");
+		st.append("Product Weight: " + weight + "kg\n");
+		st.append("Current Stock: " + stock + "\n");
+		return st.toString();
 	}
 
 	public double getWeight() {

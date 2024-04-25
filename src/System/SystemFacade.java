@@ -23,6 +23,7 @@ import Shipping.ShippingCompany;
 import Shipping.ShippingFactory;
 import Shipping.ShippingInvoker;
 import Utils.FormatsUtils;
+import eNums.eProduct;
 import eNums.eShipType;
 
 
@@ -50,8 +51,12 @@ public class SystemFacade {
 		backUpSystem();
 	}
 	
+	/**
+	 * Ex: 4.1
+	 * @apiNote  According To the assignment - hard coded 9 products and 27 Orders
+	 */
 	public void initSystems() {
-		initProductsAndOrders();//according to the assignment - hard coded 9 products and 27 Orders
+		initProductsAndOrders();//
 	}
 	
 	private void initObservers() {
@@ -68,6 +73,9 @@ public class SystemFacade {
 		return (float)sum;
 	}
 	
+	/**
+	 * Ex: 4.8
+	 */
 	public String getAllProducts() {
 		int num = 1;
 		StringBuffer st = new StringBuffer();
@@ -81,6 +89,28 @@ public class SystemFacade {
 		}
 		st.append(FormatsUtils.ANSI_CYAN_BRIGHT + "\nTotal profit in system: " + getSystemTotalProfit()+"$\n" + FormatsUtils.ANSI_RESET);
 		return st.toString();
+	}
+	
+	public String getAllProductsByType(eProduct productType) {
+		StringBuffer st = new StringBuffer();
+		int num=1;
+		for(Product product: products) {
+			if(product.getType() == productType) {
+				st.append(FormatsUtils.ANSI_YELLOW+"Product "+num+"\n" + FormatsUtils.ANSI_RESET);
+				st.append(product.getDetails() +"\n");
+				num++;
+			}			
+		}
+		return st.toString();
+	}
+	
+	public Product getProductBySerialAndType(String serial,eProduct productType) {
+		for(Product product : products) {
+			if(product.getType() == productType && product.getSerial().equals(serial)) {
+				return product;
+			}
+		}
+		return null;
 	}
 
 	
@@ -96,8 +126,12 @@ public class SystemFacade {
 			order = new Order(product,customer,amount,serial);
 		}
 		orderContorller.updateOrders(order, product);
-	}//TODO: return String
+	}
 	
+	
+	/**
+	 * Ex: 4.6
+	 */
 	public String undoOrder() {
 		if(orderContorller.haveOrders()) {
 			orderContorller.undoOrder();
@@ -175,10 +209,16 @@ public class SystemFacade {
 	}
 	
 	
+	/**
+	 * Ex: 4.10
+	 */
 	public void backUpSystem() {
 		memento = createMemento();
 	}
 	
+	/**
+	 * Ex: 4.10
+	 */
 	public void restoreSystem() {
 		setMemento(this.memento);
 	}

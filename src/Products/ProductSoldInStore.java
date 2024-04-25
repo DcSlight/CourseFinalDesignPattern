@@ -1,6 +1,7 @@
 package Products;
 import Exception.StockException;
 import Order.Order;
+import eNums.eProduct;
 
 public class ProductSoldInStore extends Product{
 	
@@ -8,7 +9,7 @@ public class ProductSoldInStore extends Product{
 	
 	
 	public ProductSoldInStore(String serial, String productName, double costPrice, double sellingPrice, int stock,double weight) {
-		super(serial, productName, costPrice*DOLLAR_TO_SHEKEL, sellingPrice*DOLLAR_TO_SHEKEL, stock,weight);
+		super(eProduct.eProductStore,serial, productName, costPrice*DOLLAR_TO_SHEKEL, sellingPrice*DOLLAR_TO_SHEKEL, stock,weight);
 	}
 
 	@Override

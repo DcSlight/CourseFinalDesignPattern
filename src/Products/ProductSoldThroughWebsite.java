@@ -1,12 +1,13 @@
 package Products;
 import Exception.StockException;
 import Order.Order;
+import eNums.eProduct;
 
 public class ProductSoldThroughWebsite extends Product{
 
 	public ProductSoldThroughWebsite(String serial, String productName, double costPrice, double sellingPrice,
 			int stock,double weight) {
-		super(serial, productName, costPrice, sellingPrice, stock,weight);
+		super(eProduct.eProductWebsite,serial, productName, costPrice, sellingPrice, stock,weight);
 	}
 
 	@Override

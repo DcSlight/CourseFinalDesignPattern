@@ -29,7 +29,7 @@ Final Course Design Pattern (10119)
 	B. my design pattern.pdf
 	C. class diagram.pdf
 	D. class diagram.html
-	E. Short video.mp4
+	E. final course design pattern video.mp4
 	
 
 ------------------ About -----------------------------------------
